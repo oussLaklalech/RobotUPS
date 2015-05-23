@@ -7,7 +7,6 @@ import datatype.Position
 import java.awt.Color
 
 namespace Robot {
-	
 	ecosystem EcoRobots {
 		
 		provides create: ICreateRobot
