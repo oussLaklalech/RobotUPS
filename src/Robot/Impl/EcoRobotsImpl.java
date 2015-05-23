@@ -12,17 +12,22 @@ import datatype.Position;
 public class EcoRobotsImpl extends EcoRobots{
 
 	@Override
-	protected Robot make_Robot(final Color color, final Position position) {
-		// TODO Auto-generated method stub
+	protected Robot make_Robot(final int id, final Color color, final Position position) {
+		
 		return new Robot(){
 
 			private Color myColor;
 			private Position myPosition;
+			private int myId;
 			
 			@Override
 			protected void start() {
+				System.out.println("Init Robot num : "+id);
+				System.out.println("Ma couleur est : "+color.toString());
+				System.out.println("Ma position initiale est : X = "+position.getPosX()+" et Y = "+position.getPosY());
 				myColor = color;
 				myPosition = position;
+				myId = id;
 			}
 			
 			@Override
@@ -58,15 +63,20 @@ public class EcoRobotsImpl extends EcoRobots{
 
 					@Override
 					public void turnLeft() {
-						myPosition.setPosX(myPosition.getPosX()+1);
+						System.out.println(myPosition);
+						myPosition.setPosY(myPosition.getPosY()-1);
+						System.out.println(myPosition);
 						System.out.println("je tourne à gauche");
-						System.out.println("voici les coordonnées : X = "+myPosition.getPosX());
-						System.out.println("voici les coordonnées : Y = "+myPosition.getPosY());
+						//System.out.println("voici les coordonnées : X = "+myPosition.getPosX());
+						//System.out.println("voici les coordonnées : Y = "+myPosition.getPosY());
 					}
 
 					@Override
 					public void turnRight() {
-						// TODO Auto-generated method stub
+						myPosition.setPosY(myPosition.getPosY()+1);
+						System.out.println("je tourne à droite");
+						System.out.println("voici les coordonnées : X = "+myPosition.getPosX());
+						System.out.println("voici les coordonnées : Y = "+myPosition.getPosY());
 						
 					}
 
@@ -78,8 +88,11 @@ public class EcoRobotsImpl extends EcoRobots{
 
 					@Override
 					public void goStraight() {
-						// TODO Auto-generated method stub
-						
+						myPosition.setPosX(myPosition.getPosX()+1);
+						// TODO : Aller tout droit dépend du sens du Robot (X+1 ou X-1)
+						System.out.println("je vais tout droit");
+						System.out.println("voici les coordonnées : X = "+myPosition.getPosX());
+						System.out.println("voici les coordonnées : Y = "+myPosition.getPosY());
 					}
 				};
 			}
@@ -93,12 +106,10 @@ public class EcoRobotsImpl extends EcoRobots{
 		return new ICreateRobot() {
 			
 			@Override
-			public Robot createStandaloneRobot(Color color, Position position) {
+			public Robot createStandaloneRobot(int id, Color color, Position position) {
 				// TODO Auto-generated method stub
-				return make_Robot(color, position);
+				return make_Robot(id, color, position);
 			}
 		};
 	}
-
-
 }

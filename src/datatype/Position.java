@@ -26,6 +26,9 @@ public class Position {
 		this.posY = posY;
 	}
 	
+	public String toString(){
+		return "X = "+posX+" | Y = "+posY;
+	}
 	
 }
 
