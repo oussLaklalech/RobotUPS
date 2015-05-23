@@ -9,7 +9,7 @@ import Robot.interfaces.IEye;
 import Robot.interfaces.IFoot;
 import datatype.Position;
 
-public class EnvironnementImpl extends EcoRobots{
+public class EcoRobotsImpl extends EcoRobots{
 
 	@Override
 	protected Robot make_Robot(final Color color, final Position position) {
