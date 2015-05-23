@@ -1,0 +1,21 @@
+import Robot.interfaces.IBrain
+import Robot.interfaces.ICreateRobot
+import Robot.interfaces.IEye
+import Robot.interfaces.IFoot
+import datatype.Position
+import java.awt.Color
+
+namespace Robot {
+	
+	ecosystem Environnement {
+		
+		provides create: ICreateRobot
+		
+		species Robot(color: Color, position: Position) {
+			
+			provides percevoir: IEye
+			provides decider: IBrain
+			provides agir: IFoot
+		}
+	}
+}
