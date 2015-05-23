@@ -2,7 +2,6 @@ import java.awt.Color;
 
 import datatype.Position;
 import Robot.Environnement;
-import Robot.Environnement.Component;
 import Robot.Environnement.Robot;
 import Robot.Impl.EnvironnementImpl;
 
