@@ -3,8 +3,9 @@ package Robot.interfaces;
 import java.awt.Color;
 
 import datatype.Position;
-import Robot.Environnement;
+import Robot.EcoRobots.Robot;
+import Robot.EcoRobots;
 
 public interface ICreateRobot {
-	public Environnement.Robot.Component createStandaloneRobot(Color color, Position position);
+	public Robot createStandaloneRobot(Color color, Position position);
 }
