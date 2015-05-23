@@ -1,0 +1,10 @@
+import grid.Interfaces.ICellsInfo
+
+namespace grid {
+
+    component Grid {
+
+        provides cellsInfo : ICellsInfo
+        
+        }
+}

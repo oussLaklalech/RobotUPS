@@ -1,0 +1,8 @@
+import grid.Interfaces.ICellsInfo
+
+namespace gridgui{
+	component GridGui{
+		
+		requires cellsInfo : ICellsInfo
+	}
+}

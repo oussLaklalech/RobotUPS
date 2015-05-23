@@ -1,0 +1,12 @@
+import grid.Grid
+import gridgui.GridGui
+
+namespace environnement{
+	
+	ecosystem Environnement{
+		part grid : Grid
+		part gui : GridGui{
+		bind cellsInfo  to grid.cellsInfo
+		}
+	}
+}
