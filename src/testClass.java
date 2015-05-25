@@ -1,7 +1,9 @@
 import java.awt.Color;
 
 import datatype.Position;
+import environnement.Impl.EnvironnementImpl;
 import Robot.EcoRobots;
+import Robot.Environnement;
 import Robot.EcoRobots.Robot;
 import Robot.Impl.EcoRobotsImpl;
 
@@ -9,15 +11,8 @@ import Robot.Impl.EcoRobotsImpl;
 public class testClass {
 
 	public static void main(String[] args) {
-
-		EcoRobots.Component environnement = new EcoRobotsImpl().newComponent();
-		Robot r1 = environnement.create().createStandaloneRobot(1, Color.BLACK, new Position(0, 1));
-		Robot r2 = environnement.create().createStandaloneRobot(2, Color.RED, new Position(8, 1));
-		
-		r1._newComponent(null, true).decider().fakir();
-		r2._newComponent(null, true).decider().fakir();
-		//r1.decider().fakir();
-		//r2.decider().fakir();
+		Environnement.Component systeme = new EnvironnementImpl().newComponent();
+		systeme.init().initApp();
 	}
 
 }

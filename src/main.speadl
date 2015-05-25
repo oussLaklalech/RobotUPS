@@ -2,20 +2,34 @@ import Robot.interfaces.IBrain
 import Robot.interfaces.ICreateRobot
 import Robot.interfaces.IEye
 import Robot.interfaces.IFoot
+import Robot.interfaces.IGettersRobot
 import Robot.interfaces.IInfo
 import datatype.Position
+import environnement.Interface.IPlay
 import java.awt.Color
 
 namespace Robot {
 	ecosystem EcoRobots {
 		
 		provides create: ICreateRobot
+		requires informationNeed : IInfo
 				
 		species Robot(id : int,color: Color, position: Position) {
 			provides percevoir: IEye
 			provides decider: IBrain
 			provides agir: IFoot
-			requires information : IInfo
+			provides getInfoRobot: IGettersRobot
 		}
+	}
+	
+	ecosystem Environnement {
+		
+		provides informationGive : IInfo
+		provides init : IPlay
+		
+		part robots : EcoRobots{
+			bind informationNeed to informationGive
+		}
+		
 	}
 }

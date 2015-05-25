@@ -1,15 +1,19 @@
 package Robot.Impl;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import Robot.EcoRobots;
 import Robot.interfaces.IBrain;
 import Robot.interfaces.ICreateRobot;
 import Robot.interfaces.IEye;
 import Robot.interfaces.IFoot;
+import Robot.interfaces.IGettersRobot;
 import datatype.Position;
 
 public class EcoRobotsImpl extends EcoRobots{
+	
+	private ArrayList<Robot> listRobots = new ArrayList<Robot>();
 
 	@Override
 	protected Robot make_Robot(final int id, final Color color, final Position position) {
@@ -38,7 +42,7 @@ public class EcoRobotsImpl extends EcoRobots{
 					@Override
 					public void regarderAutour() {
 						System.out.println("je regarde autour de moi !!");
-						// Demander à l'environnement s il y a presence d'une boite à la position actuelle
+						//TODO: Demander à l'environnement s il y a presence d'une boite à la position actuelle
 					}
 				};
 			}
@@ -51,8 +55,8 @@ public class EcoRobotsImpl extends EcoRobots{
 					public void fakir() {
 						System.out.println("Je suis entrain de reflechir");
 						provides().agir().turnLeft();
-						provides().agir().turnLeft();
-						provides().agir().turnLeft();
+						provides().agir().turnRight();
+						provides().percevoir().regarderAutour();
 					}
 				};
 			}
@@ -63,7 +67,6 @@ public class EcoRobotsImpl extends EcoRobots{
 
 					@Override
 					public void turnLeft() {
-						System.out.println(myPosition);
 						myPosition.setPosY(myPosition.getPosY()-1);
 						System.out.println(myPosition);
 						System.out.println("je tourne à gauche");
@@ -74,10 +77,8 @@ public class EcoRobotsImpl extends EcoRobots{
 					@Override
 					public void turnRight() {
 						myPosition.setPosY(myPosition.getPosY()+1);
+						System.out.println(myPosition);
 						System.out.println("je tourne à droite");
-						System.out.println("voici les coordonnées : X = "+myPosition.getPosX());
-						System.out.println("voici les coordonnées : Y = "+myPosition.getPosY());
-						
 					}
 
 					@Override
@@ -88,11 +89,36 @@ public class EcoRobotsImpl extends EcoRobots{
 
 					@Override
 					public void goStraight() {
-						myPosition.setPosX(myPosition.getPosX()+1);
 						// TODO : Aller tout droit dépend du sens du Robot (X+1 ou X-1)
+						myPosition.setPosX(myPosition.getPosX()+1);
+						System.out.println(myPosition);
 						System.out.println("je vais tout droit");
-						System.out.println("voici les coordonnées : X = "+myPosition.getPosX());
-						System.out.println("voici les coordonnées : Y = "+myPosition.getPosY());
+					}
+					
+				};
+			}
+
+			@Override
+			protected IGettersRobot make_getInfoRobot() {
+				// TODO Auto-generated method stub
+				return new IGettersRobot() {
+					
+					@Override
+					public Position getPosition() {
+						// TODO Auto-generated method stub
+						return myPosition;
+					}
+					
+					@Override
+					public int getId() {
+						// TODO Auto-generated method stub
+						return myId;
+					}
+					
+					@Override
+					public Color getColor() {
+						// TODO Auto-generated method stub
+						return myColor;
 					}
 				};
 			}
@@ -104,11 +130,12 @@ public class EcoRobotsImpl extends EcoRobots{
 	protected ICreateRobot make_create() {
 		// TODO Auto-generated method stub
 		return new ICreateRobot() {
-			
 			@Override
 			public Robot createStandaloneRobot(int id, Color color, Position position) {
 				// TODO Auto-generated method stub
-				return make_Robot(id, color, position);
+				Robot tempRobot = make_Robot(id, color, position);
+				listRobots.add(tempRobot);
+				return tempRobot;
 			}
 		};
 	}
