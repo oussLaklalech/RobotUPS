@@ -25,11 +25,9 @@ namespace Robot {
 	ecosystem Environnement {
 		
 		provides informationGive : IInfo
-		provides init : IPlay
 		
 		part robots : EcoRobots{
 			bind informationNeed to informationGive
 		}
-		
 	}
 }

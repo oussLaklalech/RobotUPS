@@ -10,11 +10,21 @@ import Robot.interfaces.IEye;
 import Robot.interfaces.IFoot;
 import Robot.interfaces.IGettersRobot;
 import datatype.Position;
+import environnement.Impl.EnvironnementImpl;
 
 public class EcoRobotsImpl extends EcoRobots{
 	
-	private ArrayList<Robot> listRobots = new ArrayList<Robot>();
+	private ArrayList<Robot.Component> listRobots = new ArrayList<Robot.Component>();
 
+	@Override
+	protected void start() {
+		System.out.println("Start de ECOROBOT");
+		Robot.Component r1 = this.make_create().createStandaloneRobot(1, Color.BLACK, new Position(5, 9));
+		Robot.Component r2 = this.make_create().createStandaloneRobot(1, Color.GREEN, new Position(0, 1));
+		listRobots.add(r1);
+		listRobots.add(r2);
+	}
+	
 	@Override
 	protected Robot make_Robot(final int id, final Color color, final Position position) {
 		
@@ -32,6 +42,7 @@ public class EcoRobotsImpl extends EcoRobots{
 				myColor = color;
 				myPosition = position;
 				myId = id;
+				this.make_decider().fakir();
 			}
 			
 			@Override
@@ -43,6 +54,7 @@ public class EcoRobotsImpl extends EcoRobots{
 					public void regarderAutour() {
 						System.out.println("je regarde autour de moi !!");
 						//TODO: Demander à l'environnement s il y a presence d'une boite à la position actuelle
+						System.out.println(eco_requires().informationNeed().getMyPosition(myId));
 					}
 				};
 			}
@@ -126,15 +138,17 @@ public class EcoRobotsImpl extends EcoRobots{
 		};
 	}
 
+
 	@Override
 	protected ICreateRobot make_create() {
 		// TODO Auto-generated method stub
 		return new ICreateRobot() {
 			@Override
-			public Robot createStandaloneRobot(int id, Color color, Position position) {
+			public EcoRobots.Robot.Component createStandaloneRobot(int id, Color color, Position position) {
 				// TODO Auto-generated method stub
-				Robot tempRobot = make_Robot(id, color, position);
-				listRobots.add(tempRobot);
+			EcoRobots.Robot.Component tempRobot =  newRobot(id, color, position);
+				
+				//listRobots.add(tempRobot);
 				return tempRobot;
 			}
 		};

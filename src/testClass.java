@@ -12,7 +12,7 @@ public class testClass {
 
 	public static void main(String[] args) {
 		Environnement.Component systeme = new EnvironnementImpl().newComponent();
-		systeme.init().initApp();
+		//systeme.init().initApp();
 	}
 
 }
