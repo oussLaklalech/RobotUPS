@@ -8,9 +8,7 @@ import Robot.interfaces.IBrain;
 import Robot.interfaces.ICreateRobot;
 import Robot.interfaces.IEye;
 import Robot.interfaces.IFoot;
-import Robot.interfaces.IGettersRobot;
 import datatype.Position;
-import environnement.Impl.EnvironnementImpl;
 
 public class EcoRobotsImpl extends EcoRobots{
 	
@@ -20,7 +18,7 @@ public class EcoRobotsImpl extends EcoRobots{
 	protected void start() {
 		System.out.println("Start de ECOROBOT");
 		Robot.Component r1 = this.make_create().createStandaloneRobot(1, Color.BLACK, new Position(5, 9));
-		Robot.Component r2 = this.make_create().createStandaloneRobot(1, Color.GREEN, new Position(0, 1));
+		Robot.Component r2 = this.make_create().createStandaloneRobot(2, Color.GREEN, new Position(0, 1));
 		listRobots.add(r1);
 		listRobots.add(r2);
 	}
@@ -42,12 +40,11 @@ public class EcoRobotsImpl extends EcoRobots{
 				myColor = color;
 				myPosition = position;
 				myId = id;
-				this.make_decider().fakir();
+				this.make_decider().reflechir();
 			}
 			
 			@Override
 			protected IEye make_percevoir() {
-				// TODO Auto-generated method stub
 				return new IEye() {
 
 					@Override
@@ -64,7 +61,8 @@ public class EcoRobotsImpl extends EcoRobots{
 				return new IBrain() {
 
 					@Override
-					public void fakir() {
+					public void reflechir() {
+						// TODO : Algorithme de décision
 						System.out.println("Je suis entrain de reflechir");
 						provides().agir().turnLeft();
 						provides().agir().turnRight();
@@ -109,43 +107,15 @@ public class EcoRobotsImpl extends EcoRobots{
 					
 				};
 			}
-
-			@Override
-			protected IGettersRobot make_getInfoRobot() {
-				// TODO Auto-generated method stub
-				return new IGettersRobot() {
-					
-					@Override
-					public Position getPosition() {
-						// TODO Auto-generated method stub
-						return myPosition;
-					}
-					
-					@Override
-					public int getId() {
-						// TODO Auto-generated method stub
-						return myId;
-					}
-					
-					@Override
-					public Color getColor() {
-						// TODO Auto-generated method stub
-						return myColor;
-					}
-				};
-			}
 			
 		};
 	}
 
-
 	@Override
 	protected ICreateRobot make_create() {
-		// TODO Auto-generated method stub
 		return new ICreateRobot() {
 			@Override
 			public EcoRobots.Robot.Component createStandaloneRobot(int id, Color color, Position position) {
-				// TODO Auto-generated method stub
 			EcoRobots.Robot.Component tempRobot =  newRobot(id, color, position);
 				
 				//listRobots.add(tempRobot);
@@ -153,4 +123,5 @@ public class EcoRobotsImpl extends EcoRobots{
 			}
 		};
 	}
+	
 }

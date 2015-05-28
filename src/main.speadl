@@ -2,10 +2,8 @@ import Robot.interfaces.IBrain
 import Robot.interfaces.ICreateRobot
 import Robot.interfaces.IEye
 import Robot.interfaces.IFoot
-import Robot.interfaces.IGettersRobot
 import Robot.interfaces.IInfo
 import datatype.Position
-import environnement.Interface.IPlay
 import java.awt.Color
 
 namespace Robot {
@@ -18,7 +16,6 @@ namespace Robot {
 			provides percevoir: IEye
 			provides decider: IBrain
 			provides agir: IFoot
-			provides getInfoRobot: IGettersRobot
 		}
 	}
 	
