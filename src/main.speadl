@@ -3,19 +3,30 @@ import Robot.interfaces.ICreateRobot
 import Robot.interfaces.IEye
 import Robot.interfaces.IFoot
 import Robot.interfaces.IInfo
+import box.Interface.IBoxesInfo
+import box.Interface.ICreateBox
 import datatype.Position
 import java.awt.Color
 
 namespace Robot {
 	ecosystem EcoRobots {
-		
 		provides create: ICreateRobot
 		requires informationNeed : IInfo
+		requires informationAboutBoxesNeed : IBoxesInfo
 				
 		species Robot(id : int,color: Color, position: Position) {
 			provides percevoir: IEye
 			provides decider: IBrain
 			provides agir: IFoot
+		}
+	}
+	
+	ecosystem EcoBoxes {
+		provides create: ICreateBox
+		provides informationAboutBoxesGive : IBoxesInfo
+		
+		species Box(id : int,color: Color, position: Position) {
+			
 		}
 	}
 	
@@ -25,6 +36,9 @@ namespace Robot {
 		
 		part robots : EcoRobots{
 			bind informationNeed to informationGive
+			bind informationAboutBoxesNeed to boxes.informationAboutBoxesGive
 		}
+		
+		part boxes : EcoBoxes
 	}
 }

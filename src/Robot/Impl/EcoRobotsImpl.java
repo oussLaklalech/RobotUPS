@@ -115,11 +115,8 @@ public class EcoRobotsImpl extends EcoRobots{
 	protected ICreateRobot make_create() {
 		return new ICreateRobot() {
 			@Override
-			public EcoRobots.Robot.Component createStandaloneRobot(int id, Color color, Position position) {
-			EcoRobots.Robot.Component tempRobot =  newRobot(id, color, position);
-				
-				//listRobots.add(tempRobot);
-				return tempRobot;
+			public Robot.Component createStandaloneRobot(int id, Color color, Position position) {
+				return newRobot(id, color, position);
 			}
 		};
 	}
