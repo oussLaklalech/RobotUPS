@@ -8,7 +8,7 @@ import Robot.EcoRobots;
 import Robot.interfaces.IBrain;
 import Robot.interfaces.ICreateRobot;
 import Robot.interfaces.IEye;
-import Robot.interfaces.IFoot;
+import Robot.interfaces.IFootHand;
 import datatype.Position;
 
 public class EcoRobotsImpl extends EcoRobots{
@@ -77,8 +77,8 @@ public class EcoRobotsImpl extends EcoRobots{
 			}
 
 			@Override
-			protected IFoot make_agir() {
-				return new IFoot() {
+			protected IFootHand make_agir() {
+				return new IFootHand() {
 
 					@Override
 					public void turnLeft() {
@@ -108,6 +108,12 @@ public class EcoRobotsImpl extends EcoRobots{
 						myPosition.setPosX(myPosition.getPosX()+1);
 						System.out.println(myPosition);
 						System.out.println("je vais tout droit");
+					}
+
+					@Override
+					public void raiseBox() {
+						// TODO : Soulever la boîte
+						
 					}
 					
 				};
