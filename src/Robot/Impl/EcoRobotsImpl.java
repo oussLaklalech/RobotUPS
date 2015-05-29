@@ -3,6 +3,7 @@ package Robot.Impl;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import Robot.EcoBoxes.Box;
 import Robot.EcoRobots;
 import Robot.interfaces.IBrain;
 import Robot.interfaces.ICreateRobot;
@@ -50,9 +51,11 @@ public class EcoRobotsImpl extends EcoRobots{
 					@Override
 					public void regarderAutour() {
 						System.out.println("je regarde autour de moi !!");
-						//TODO: Demander à l'environnement s il y a presence d'une boite à la position actuelle
-						System.out.println("PERCEPTION : "+eco_requires().informationAboutBoxesNeed().getBoxInPosition(myPosition));
-						//System.out.println(eco_requires().informationNeed().getMyPosition(myId));
+						Box.Component box = eco_requires().informationAboutBoxesNeed().getBoxInPosition(myPosition);
+						if(box != null)
+							System.out.println("PERCEPTION : "+box.getInfoBox().getColor());
+						else
+							System.out.println("pas de box dans l'emplacement");
 					}
 				};
 			}

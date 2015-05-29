@@ -86,7 +86,7 @@ public class EcoBoxesImpl extends EcoBoxes{
 		return new IBoxesInfo() {
 
 			@Override
-			public int getBoxInPosition(Position positionBox) {
+			public Box.Component getBoxInPosition(Position positionBox) {
 				// TODO : chercher dans la liste des boxes par position
 				// retourne l'id de la box (ou le composant Box) si existe
 				// retourne -1 sinon (ou null)
@@ -95,10 +95,10 @@ public class EcoBoxesImpl extends EcoBoxes{
 					System.out.println(listBoxes.get(i).getInfoBox().getPosition());
 					System.out.println(positionBox);
 					if(listBoxes.get(i).getInfoBox().getPosition().equals(positionBox)){
-						return listBoxes.get(i).getInfoBox().getId();
+						return listBoxes.get(i);
 					}
 				}
-				return -1;
+				return null;
 			}
 			
 			
