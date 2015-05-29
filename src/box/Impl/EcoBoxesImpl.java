@@ -6,15 +6,16 @@ import java.util.ArrayList;
 import Robot.EcoBoxes;
 import box.Interface.IBoxesInfo;
 import box.Interface.ICreateBox;
+import box.Interface.IGettersBox;
 import datatype.Position;
 
 public class EcoBoxesImpl extends EcoBoxes{
 
-	private ArrayList<Box.Component> listBoxes = new ArrayList<Box.Component>();
+	private static ArrayList<Box.Component> listBoxes = new ArrayList<Box.Component>();
 
 	@Override
 	protected void start() {
-		System.out.println("Start de ECOROBOT");
+		System.out.println("Start de ECOBOX");
 		Box.Component b1 = this.make_create().createStandaloneBox(1, Color.BLUE, new Position(5, 2));
 		Box.Component b2 = this.make_create().createStandaloneBox(2, Color.GREEN, new Position(0, 1));
 		listBoxes.add(b1);
@@ -37,9 +38,35 @@ public class EcoBoxesImpl extends EcoBoxes{
 				myPosition = position;
 				myId = id;
 			}
+
+			@Override
+			protected IGettersBox make_getInfoBox() {
+				// TODO Auto-generated method stub
+				return new IGettersBox() {
+					
+					@Override
+					public Position getPosition() {
+						// TODO Auto-generated method stub
+						return myPosition;
+					}
+					
+					@Override
+					public int getId() {
+						// TODO Auto-generated method stub
+						return myId;
+					}
+					
+					@Override
+					public Color getColor() {
+						// TODO Auto-generated method stub
+						return myColor;
+					}
+				};
+			}
 		};
 		
 	}
+	
 	@Override
 	protected ICreateBox make_create() {
 		// TODO Auto-generated method stub
@@ -55,14 +82,26 @@ public class EcoBoxesImpl extends EcoBoxes{
 
 	@Override
 	protected IBoxesInfo make_informationAboutBoxesGive() {
-		// TODO Auto-generated method stub
+		
 		return new IBoxesInfo() {
-			
+
 			@Override
-			public Position getBoxPosition(int idBox) {
-				// TODO Auto-generated method stub
-				return new Position(2, 1);
+			public int getBoxInPosition(Position positionBox) {
+				// TODO : chercher dans la liste des boxes par position
+				// retourne l'id de la box (ou le composant Box) si existe
+				// retourne -1 sinon (ou null)
+				System.out.println("*** getBoxInPosition ****");
+				for(int i=0;i<listBoxes.size();i++){
+					System.out.println(listBoxes.get(i).getInfoBox().getPosition());
+					System.out.println(positionBox);
+					if(listBoxes.get(i).getInfoBox().getPosition().equals(positionBox)){
+						return listBoxes.get(i).getInfoBox().getId();
+					}
+				}
+				return -1;
 			}
+			
+			
 		};
 	}
 

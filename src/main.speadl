@@ -5,6 +5,7 @@ import Robot.interfaces.IFoot
 import Robot.interfaces.IInfo
 import box.Interface.IBoxesInfo
 import box.Interface.ICreateBox
+import box.Interface.IGettersBox
 import datatype.Position
 import java.awt.Color
 
@@ -26,7 +27,7 @@ namespace Robot {
 		provides informationAboutBoxesGive : IBoxesInfo
 		
 		species Box(id : int,color: Color, position: Position) {
-			
+			provides getInfoBox: IGettersBox	
 		}
 	}
 	
@@ -34,11 +35,11 @@ namespace Robot {
 		
 		provides informationGive : IInfo
 		
+		part boxes : EcoBoxes
+		
 		part robots : EcoRobots{
 			bind informationNeed to informationGive
 			bind informationAboutBoxesNeed to boxes.informationAboutBoxesGive
 		}
-		
-		part boxes : EcoBoxes
 	}
 }

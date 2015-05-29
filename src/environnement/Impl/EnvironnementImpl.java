@@ -1,17 +1,12 @@
 package environnement.Impl;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
-import box.Impl.EcoBoxesImpl;
-import datatype.Position;
-import environnement.Interface.IPlay;
 import Robot.EcoBoxes;
 import Robot.EcoRobots;
 import Robot.Environnement;
-import Robot.EcoRobots.Robot;
 import Robot.Impl.EcoRobotsImpl;
 import Robot.interfaces.IInfo;
+import box.Impl.EcoBoxesImpl;
+import datatype.Position;
 
 public class EnvironnementImpl extends Environnement{	
 

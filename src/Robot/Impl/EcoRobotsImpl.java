@@ -17,8 +17,8 @@ public class EcoRobotsImpl extends EcoRobots{
 	@Override
 	protected void start() {
 		System.out.println("Start de ECOROBOT");
-		Robot.Component r1 = this.make_create().createStandaloneRobot(1, Color.BLACK, new Position(5, 9));
-		Robot.Component r2 = this.make_create().createStandaloneRobot(2, Color.GREEN, new Position(0, 1));
+		Robot.Component r1 = this.make_create().createStandaloneRobot(1, Color.BLACK, new Position(5, 2));
+		Robot.Component r2 = this.make_create().createStandaloneRobot(2, Color.GREEN, new Position(10, 1));
 		listRobots.add(r1);
 		listRobots.add(r2);
 	}
@@ -51,7 +51,8 @@ public class EcoRobotsImpl extends EcoRobots{
 					public void regarderAutour() {
 						System.out.println("je regarde autour de moi !!");
 						//TODO: Demander à l'environnement s il y a presence d'une boite à la position actuelle
-						System.out.println(eco_requires().informationNeed().getMyPosition(myId));
+						System.out.println("PERCEPTION : "+eco_requires().informationAboutBoxesNeed().getBoxInPosition(myPosition));
+						//System.out.println(eco_requires().informationNeed().getMyPosition(myId));
 					}
 				};
 			}
@@ -64,6 +65,7 @@ public class EcoRobotsImpl extends EcoRobots{
 					public void reflechir() {
 						// TODO : Algorithme de décision
 						System.out.println("Je suis entrain de reflechir");
+						provides().percevoir().regarderAutour();
 						provides().agir().turnLeft();
 						provides().agir().turnRight();
 						provides().percevoir().regarderAutour();
