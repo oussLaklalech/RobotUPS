@@ -3,14 +3,13 @@ package Robot.Impl;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import Robot.EcoBoxes.Box;
 import Robot.EcoRobots;
 import Robot.interfaces.IBrain;
 import Robot.interfaces.ICreateRobot;
 import Robot.interfaces.IEye;
-import Robot.interfaces.IFoot;
-import Robot.interfaces.IGettersRobot;
+import Robot.interfaces.IFootHand;
 import datatype.Position;
-import environnement.Impl.EnvironnementImpl;
 
 public class EcoRobotsImpl extends EcoRobots{
 	
@@ -19,8 +18,8 @@ public class EcoRobotsImpl extends EcoRobots{
 	@Override
 	protected void start() {
 		System.out.println("Start de ECOROBOT");
-		Robot.Component r1 = this.make_create().createStandaloneRobot(1, Color.BLACK, new Position(5, 9));
-		Robot.Component r2 = this.make_create().createStandaloneRobot(1, Color.GREEN, new Position(0, 1));
+		Robot.Component r1 = this.make_create().createStandaloneRobot(1, Color.BLACK, new Position(5, 2));
+		Robot.Component r2 = this.make_create().createStandaloneRobot(2, Color.GREEN, new Position(10, 1));
 		listRobots.add(r1);
 		listRobots.add(r2);
 	}
@@ -42,19 +41,21 @@ public class EcoRobotsImpl extends EcoRobots{
 				myColor = color;
 				myPosition = position;
 				myId = id;
-				this.make_decider().fakir();
+				this.make_decider().reflechir();
 			}
 			
 			@Override
 			protected IEye make_percevoir() {
-				// TODO Auto-generated method stub
 				return new IEye() {
 
 					@Override
 					public void regarderAutour() {
 						System.out.println("je regarde autour de moi !!");
-						//TODO: Demander à l'environnement s il y a presence d'une boite à la position actuelle
-						System.out.println(eco_requires().informationNeed().getMyPosition(myId));
+						Box.Component box = eco_requires().informationAboutBoxesNeed().getBoxInPosition(myPosition);
+						if(box != null)
+							System.out.println("PERCEPTION : "+box.getInfoBox().getColor());
+						else
+							System.out.println("pas de box dans l'emplacement");
 					}
 				};
 			}
@@ -64,8 +65,10 @@ public class EcoRobotsImpl extends EcoRobots{
 				return new IBrain() {
 
 					@Override
-					public void fakir() {
+					public void reflechir() {
+						// TODO : Algorithme de décision
 						System.out.println("Je suis entrain de reflechir");
+						provides().percevoir().regarderAutour();
 						provides().agir().turnLeft();
 						provides().agir().turnRight();
 						provides().percevoir().regarderAutour();
@@ -74,8 +77,8 @@ public class EcoRobotsImpl extends EcoRobots{
 			}
 
 			@Override
-			protected IFoot make_agir() {
-				return new IFoot() {
+			protected IFootHand make_agir() {
+				return new IFootHand() {
 
 					@Override
 					public void turnLeft() {
@@ -106,51 +109,27 @@ public class EcoRobotsImpl extends EcoRobots{
 						System.out.println(myPosition);
 						System.out.println("je vais tout droit");
 					}
-					
-				};
-			}
 
-			@Override
-			protected IGettersRobot make_getInfoRobot() {
-				// TODO Auto-generated method stub
-				return new IGettersRobot() {
-					
 					@Override
-					public Position getPosition() {
-						// TODO Auto-generated method stub
-						return myPosition;
+					public void raiseBox() {
+						// TODO : Soulever la boîte
+						
 					}
 					
-					@Override
-					public int getId() {
-						// TODO Auto-generated method stub
-						return myId;
-					}
-					
-					@Override
-					public Color getColor() {
-						// TODO Auto-generated method stub
-						return myColor;
-					}
 				};
 			}
 			
 		};
 	}
 
-
 	@Override
 	protected ICreateRobot make_create() {
-		// TODO Auto-generated method stub
 		return new ICreateRobot() {
 			@Override
-			public EcoRobots.Robot.Component createStandaloneRobot(int id, Color color, Position position) {
-				// TODO Auto-generated method stub
-			EcoRobots.Robot.Component tempRobot =  newRobot(id, color, position);
-				
-				//listRobots.add(tempRobot);
-				return tempRobot;
+			public Robot.Component createStandaloneRobot(int id, Color color, Position position) {
+				return newRobot(id, color, position);
 			}
 		};
 	}
+	
 }

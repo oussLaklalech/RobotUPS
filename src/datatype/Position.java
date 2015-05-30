@@ -30,5 +30,17 @@ public class Position {
 		return "X = "+posX+" | Y = "+posY;
 	}
 	
+	@Override
+	public boolean equals(Object other){
+	    if (other == null) return false;
+	    if (other == this) return true;
+	    if (!(other instanceof Position))return false;
+	    Position otherMyClass = (Position)other;
+	    if(otherMyClass.getPosX() == posX && otherMyClass.getPosY() == posY)
+	    	return true;
+	    else 
+	    	return false;
+	}
+	
 }
 

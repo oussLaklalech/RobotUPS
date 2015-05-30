@@ -1,15 +1,12 @@
 package environnement.Impl;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
-import datatype.Position;
-import environnement.Interface.IPlay;
+import Robot.EcoBoxes;
 import Robot.EcoRobots;
 import Robot.Environnement;
-import Robot.EcoRobots.Robot;
 import Robot.Impl.EcoRobotsImpl;
 import Robot.interfaces.IInfo;
+import box.Impl.EcoBoxesImpl;
+import datatype.Position;
 
 public class EnvironnementImpl extends Environnement{	
 
@@ -30,5 +27,11 @@ public class EnvironnementImpl extends Environnement{
 	@Override
 	protected EcoRobots make_robots() {
 		return new EcoRobotsImpl();
+	}
+
+	@Override
+	protected EcoBoxes make_boxes() {
+		// TODO Auto-generated method stub
+		return new EcoBoxesImpl();
 	}
 }
