@@ -1,3 +1,6 @@
+import Nest.Interface.ICreateNest
+import Nest.Interface.IGettersNest
+import Nest.Interface.INestsInfo
 import Robot.interfaces.IBrain
 import Robot.interfaces.ICreateRobot
 import Robot.interfaces.IEye
@@ -14,6 +17,7 @@ namespace Robot {
 		provides create: ICreateRobot
 		requires informationNeed : IInfo
 		requires informationAboutBoxesNeed : IBoxesInfo
+		requires informationAboutNestsNeed : INestsInfo
 				
 		species Robot(id : int,color: Color, position: Position) {
 			provides percevoir: IEye
@@ -31,15 +35,27 @@ namespace Robot {
 		}
 	}
 	
+	ecosystem EcoNest {
+		provides create: ICreateNest
+		provides informationAboutNestsGive : INestsInfo
+		
+		species Nest(id: int,color: Color, position: Position){
+			provides getInfoNest: IGettersNest
+		}
+	}
+	
 	ecosystem Environnement {
 		
 		provides informationGive : IInfo
 		
 		part boxes : EcoBoxes
 		
+		part nests : EcoNest
+		
 		part robots : EcoRobots{
 			bind informationNeed to informationGive
 			bind informationAboutBoxesNeed to boxes.informationAboutBoxesGive
+			bind informationAboutNestsNeed to nests.informationAboutNestsGive
 		}
 	}
 }

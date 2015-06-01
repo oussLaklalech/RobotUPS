@@ -1,6 +1,8 @@
 package environnement.Impl;
 
+import Nest.Impl.EcoNestImpl;
 import Robot.EcoBoxes;
+import Robot.EcoNest;
 import Robot.EcoRobots;
 import Robot.Environnement;
 import Robot.Impl.EcoRobotsImpl;
@@ -31,7 +33,11 @@ public class EnvironnementImpl extends Environnement{
 
 	@Override
 	protected EcoBoxes make_boxes() {
-		// TODO Auto-generated method stub
 		return new EcoBoxesImpl();
+	}
+
+	@Override
+	protected EcoNest make_nests() {
+		return new EcoNestImpl();
 	}
 }
