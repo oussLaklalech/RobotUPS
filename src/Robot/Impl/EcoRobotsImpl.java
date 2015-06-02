@@ -32,6 +32,17 @@ public class EcoRobotsImpl extends EcoRobots{
 			private Color myColor;
 			private Position myPosition;
 			private int myId;
+			private int myEnergy;
+			
+			private void updateEnergy(){
+				if(myEnergy > 3){
+					myEnergy = myEnergy-1;
+				}
+				else{
+					// TODO : Création d'un nouveau Robot
+					// Suicide
+				}	
+			}
 			
 			@Override
 			protected void start() {
@@ -41,6 +52,7 @@ public class EcoRobotsImpl extends EcoRobots{
 				myColor = color;
 				myPosition = position;
 				myId = id;
+				myEnergy = 100; // TODO : Configurable plus tard
 				this.make_decider().reflechir();
 			}
 			
@@ -85,8 +97,9 @@ public class EcoRobotsImpl extends EcoRobots{
 						myPosition.setPosY(myPosition.getPosY()-1);
 						System.out.println(myPosition);
 						System.out.println("je tourne à gauche");
-						//System.out.println("voici les coordonnées : X = "+myPosition.getPosX());
-						//System.out.println("voici les coordonnées : Y = "+myPosition.getPosY());
+						
+						updateEnergy();
+							
 					}
 
 					@Override
@@ -94,6 +107,8 @@ public class EcoRobotsImpl extends EcoRobots{
 						myPosition.setPosY(myPosition.getPosY()+1);
 						System.out.println(myPosition);
 						System.out.println("je tourne à droite");
+						
+						updateEnergy();
 					}
 
 					@Override
@@ -108,6 +123,8 @@ public class EcoRobotsImpl extends EcoRobots{
 						myPosition.setPosX(myPosition.getPosX()+1);
 						System.out.println(myPosition);
 						System.out.println("je vais tout droit");
+						
+						updateEnergy();
 					}
 
 					@Override
