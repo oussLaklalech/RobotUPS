@@ -7,13 +7,15 @@ import box.Interface.IBoxesInfo
 import box.Interface.ICreateBox
 import box.Interface.IGettersBox
 import datatype.Position
-import gui.GridGui
+import gui.Interface.IGetInfo
+import gui.Interface.IManageCell
 import gui.Interface.IManageGui
 import java.awt.Color
 
 namespace Robot {
 	ecosystem EcoRobots {
 		provides create: ICreateRobot
+		requires robotManageGui : IManageGui
 		requires informationNeed : IInfo
 		requires informationAboutBoxesNeed : IBoxesInfo
 				
@@ -21,6 +23,7 @@ namespace Robot {
 			provides percevoir: IEye
 			provides decider: IBrain
 			provides agir: IFootHand
+		
 		}
 	}
 	
@@ -34,16 +37,31 @@ namespace Robot {
 		}
 	}
 	
+	ecosystem GridGui {
+		
+		
+			provides manageGui :IManageGui
+		
+		species CellGui(position : Position) {
+			
+			provides manageCell :IManageCell
+			provides getInfo : IGetInfo
+		
+		}
+		
+	}
 	ecosystem Environnement {
 		
 		provides informationGive : IInfo
 		
 		part boxes : EcoBoxes
 		
+		part gridGui : GridGui
+		
 		part robots : EcoRobots{
 			bind informationNeed to informationGive
-			
 			bind informationAboutBoxesNeed to boxes.informationAboutBoxesGive
+			bind robotManageGui to gridGui.manageGui
 		}
 		
 		

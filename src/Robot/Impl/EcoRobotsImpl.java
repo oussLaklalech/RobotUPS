@@ -35,6 +35,12 @@ public class EcoRobotsImpl extends EcoRobots{
 			
 			@Override
 			protected void start() {
+			 try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 				System.out.println("Init Robot num : "+id);
 				System.out.println("Ma couleur est : "+color.toString());
 				System.out.println("Ma position initiale est : X = "+position.getPosX()+" et Y = "+position.getPosY());
@@ -82,18 +88,22 @@ public class EcoRobotsImpl extends EcoRobots{
 
 					@Override
 					public void turnLeft() {
+						Position lastPos=new Position(myPosition.getPosX(),myPosition.getPosY());
 						myPosition.setPosY(myPosition.getPosY()-1);
 						System.out.println(myPosition);
 						System.out.println("je tourne à gauche");
 						//System.out.println("voici les coordonnées : X = "+myPosition.getPosX());
 						//System.out.println("voici les coordonnées : Y = "+myPosition.getPosY());
+						eco_requires().robotManageGui().RobotMoveNotification(lastPos, new Position(myPosition.getPosX(),myPosition.getPosY()), myColor);
 					}
 
 					@Override
 					public void turnRight() {
+						Position lastPos=new Position(myPosition.getPosX(),myPosition.getPosY());
 						myPosition.setPosY(myPosition.getPosY()+1);
 						System.out.println(myPosition);
 						System.out.println("je tourne à droite");
+						eco_requires().robotManageGui().RobotMoveNotification(lastPos, new Position(myPosition.getPosX(),myPosition.getPosY()), myColor);
 					}
 
 					@Override
@@ -131,5 +141,7 @@ public class EcoRobotsImpl extends EcoRobots{
 			}
 		};
 	}
+
+	
 	
 }

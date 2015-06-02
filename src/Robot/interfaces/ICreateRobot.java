@@ -8,4 +8,5 @@ import Robot.EcoRobots.Robot;
 
 public interface ICreateRobot {
 	public EcoRobots.Robot.Component createStandaloneRobot(int id, Color color, Position position);
+	
 }
