@@ -54,7 +54,7 @@ public class EcoRobotsImpl extends EcoRobots{
 				myPosition = position;
 				myId = id;
 				myEnergy = 100; // TODO : Configurable plus tard
-				this.make_decider().reflechir();
+			
 			}
 			
 			@Override
@@ -166,7 +166,8 @@ public class EcoRobotsImpl extends EcoRobots{
 					{
 						 Thread t = new Thread() {
 						        public void run() {
-						        	r.decider();
+						        	for(;;)
+						        	r.decider().reflechir();
 						        }
 						      };
 						      t.start();
