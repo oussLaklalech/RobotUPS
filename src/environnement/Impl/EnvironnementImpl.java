@@ -2,7 +2,9 @@ package environnement.Impl;
 
 import gui.GridGuiImpl;
 import gui.Interface.IManageGui;
+import Nest.Impl.EcoNestImpl;
 import Robot.EcoBoxes;
+import Robot.EcoNest;
 import Robot.EcoRobots;
 import Robot.Environnement;
 import Robot.GridGui;
@@ -43,5 +45,10 @@ public class EnvironnementImpl extends Environnement{
 	protected GridGui make_gridGui() {
 		// TODO Auto-generated method stub
 		return new GridGuiImpl();
+	}
+
+	@Override
+	protected EcoNest make_nests() {
+		return new EcoNestImpl();
 	}
 }

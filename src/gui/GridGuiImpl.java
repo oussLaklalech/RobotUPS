@@ -9,8 +9,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -82,7 +80,16 @@ public class GridGuiImpl extends GridGui {
 							}
 						});
 						 buttonBox=new JButton("Crée des Boxs");
-						 buttonRobot=new JButton("Crée des Robots");;
+						
+						 buttonRobot=new JButton("Crée des Robots");
+						 buttonRobot.addActionListener(new ActionListener() {
+								
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									requires().createRobots().createRobots( (int)spinnerRobot.getValue());
+									
+								}
+							});
 						 containerTop=new JPanel();
 						 BoxLayout b= new BoxLayout(containerTop, BoxLayout.X_AXIS);
 						 containerTop.setLayout(b);
@@ -118,6 +125,7 @@ public class GridGuiImpl extends GridGui {
 							gridpane.setBorder(blackline);
 							containerPane.add(gridpane);
 							f.pack();
+							
 							//f.setExtendedState(JFrame.MAXIMIZED_BOTH);
 						} catch (NumberFormatException nfe) {
 							JOptionPane.showMessageDialog(f,

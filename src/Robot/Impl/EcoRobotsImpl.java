@@ -18,10 +18,10 @@ public class EcoRobotsImpl extends EcoRobots{
 	@Override
 	protected void start() {
 		System.out.println("Start de ECOROBOT");
-		Robot.Component r1 = this.make_create().createStandaloneRobot(1, Color.BLACK, new Position(5, 2));
+/*		Robot.Component r1 = this.make_create().createStandaloneRobot(1, Color.BLACK, new Position(5, 2));
 		Robot.Component r2 = this.make_create().createStandaloneRobot(2, Color.GREEN, new Position(10, 1));
 		listRobots.add(r1);
-		listRobots.add(r2);
+		listRobots.add(r2);*/
 	}
 	
 	@Override
@@ -32,21 +32,28 @@ public class EcoRobotsImpl extends EcoRobots{
 			private Color myColor;
 			private Position myPosition;
 			private int myId;
+			private int myEnergy;
+			
+			private void updateEnergy(){
+				if(myEnergy > 3){
+					myEnergy = myEnergy-1;
+				}
+				else{
+					// TODO : Création d'un nouveau Robot
+					// Suicide
+				}	
+			}
 			
 			@Override
 			protected void start() {
-			 try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			 
 				System.out.println("Init Robot num : "+id);
 				System.out.println("Ma couleur est : "+color.toString());
 				System.out.println("Ma position initiale est : X = "+position.getPosX()+" et Y = "+position.getPosY());
 				myColor = color;
 				myPosition = position;
 				myId = id;
+				myEnergy = 100; // TODO : Configurable plus tard
 				this.make_decider().reflechir();
 			}
 			
@@ -94,6 +101,7 @@ public class EcoRobotsImpl extends EcoRobots{
 						System.out.println("je tourne à gauche");
 						//System.out.println("voici les coordonnées : X = "+myPosition.getPosX());
 						//System.out.println("voici les coordonnées : Y = "+myPosition.getPosY());
+						updateEnergy();
 						eco_requires().robotManageGui().RobotMoveNotification(lastPos, new Position(myPosition.getPosX(),myPosition.getPosY()), myColor);
 					}
 
@@ -104,6 +112,8 @@ public class EcoRobotsImpl extends EcoRobots{
 						System.out.println(myPosition);
 						System.out.println("je tourne à droite");
 						eco_requires().robotManageGui().RobotMoveNotification(lastPos, new Position(myPosition.getPosX(),myPosition.getPosY()), myColor);
+						
+						updateEnergy();
 					}
 
 					@Override
@@ -118,6 +128,8 @@ public class EcoRobotsImpl extends EcoRobots{
 						myPosition.setPosX(myPosition.getPosX()+1);
 						System.out.println(myPosition);
 						System.out.println("je vais tout droit");
+						
+						updateEnergy();
 					}
 
 					@Override
@@ -138,6 +150,33 @@ public class EcoRobotsImpl extends EcoRobots{
 			@Override
 			public Robot.Component createStandaloneRobot(int id, Color color, Position position) {
 				return newRobot(id, color, position);
+			}
+
+			@Override
+			public boolean createRobots(int nbreRobotsToCreate) {
+				try{
+					// fair un random sur les element coulour et position en respectant la taille de la gui
+					Robot.Component r1=newRobot(2, Color.GREEN, new Position(10, 1));
+					Robot.Component r2=newRobot(3, Color.blue, new Position(3, 5));
+					Robot.Component r3=newRobot(4, Color.yellow, new Position(3, 4));
+					listRobots.add(r1);
+					listRobots.add(r2);
+					listRobots.add(r3);
+					for ( final Robot.Component r : listRobots)
+					{
+						 Thread t = new Thread() {
+						        public void run() {
+						        	r.decider();
+						        }
+						      };
+						      t.start();
+						
+					}
+				}catch(Exception e){
+					System.out.println(e.getMessage());
+					return false;
+				}
+				return true;
 			}
 		};
 	}
