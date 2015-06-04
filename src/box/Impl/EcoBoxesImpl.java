@@ -109,9 +109,11 @@ public class EcoBoxesImpl extends EcoBoxes{
 						color = Color.GREEN;
 						break;
 					}
+					Position p =new Position(rand.nextInt(tailleGrille), rand.nextInt(tailleGrille));
 					Box.Component r1 = createStandaloneBox(color,
-							new Position(rand.nextInt(tailleGrille), rand.nextInt(tailleGrille)));
+							p);
 				
+					requires().boxManageGui().BoxCreateNotification(p, color);
 			}
 				return true;}
 		};

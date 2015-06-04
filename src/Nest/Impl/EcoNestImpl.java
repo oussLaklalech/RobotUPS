@@ -79,6 +79,7 @@ public class EcoNestImpl extends EcoNest{
 			public Nest.Component createStandaloneNest(Color color, Position position) {
 				System.out.println("*****************Nid Numero "+numberNest+" a été CREE ****************");
 				Nest.Component nestTemp = newNest(color, position);
+				requires().nestManageGui().NestCreateNotification(position, color);
 				listNests.add(nestTemp);
 				
 				return nestTemp;
@@ -98,9 +99,9 @@ public class EcoNestImpl extends EcoNest{
 			public void setTailleGrille(int n) {
 				tailleGrille=n;
 				System.out.println("*****La taille de la grille est configuré à "+n+"X"+n+" pour l'ecosysteme Nest*****");
-				Nest.Component n1 = make_create().createStandaloneNest(Color.RED, new Position(0, (int)tailleGrille/2));
+				Nest.Component n1 = make_create().createStandaloneNest(Color.RED, new Position((int)tailleGrille/2, (int)tailleGrille/2));
 				Nest.Component n2 = make_create().createStandaloneNest(Color.GREEN, new Position(tailleGrille-1, 0));
-				Nest.Component n3 = make_create().createStandaloneNest(Color.BLUE, new Position((int)tailleGrille/2, (int)tailleGrille/2));
+				Nest.Component n3 = make_create().createStandaloneNest(Color.BLUE, new Position(0, (int)tailleGrille-1));
 				
 			}
 		};

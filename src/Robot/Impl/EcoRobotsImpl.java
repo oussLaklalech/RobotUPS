@@ -271,8 +271,9 @@ public class EcoRobotsImpl extends EcoRobots {
 							color = Color.GREEN;
 							break;
 						}
-						Robot.Component r1 = createStandaloneRobot(color,
-								new Position(rand.nextInt(tailleGrille), rand.nextInt(tailleGrille)));
+						Position posRobot=new Position(rand.nextInt(tailleGrille), rand.nextInt(tailleGrille));
+						Robot.Component r1 = createStandaloneRobot(color,posRobot);
+						requires().robotManageGui().RobotCreateNotification(posRobot, color);
 					}
 					for (final Robot.Component r : listRobots) {
 						Thread t = new Thread() {
