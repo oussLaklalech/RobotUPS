@@ -3,7 +3,6 @@ package Robot.Impl;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import Robot.EcoBoxes.Box;
@@ -97,15 +96,16 @@ public class EcoRobotsImpl extends EcoRobots {
 						Box.Component boxTemp = provides().percevoir().lookAtMyPosition();
 						// ********* DECIDER **********
 						// Si le robot retrouve une boîte dans la position, il soulève la boîte
-						if(boxTemp != null){
+						if(boxTemp != null && myBox == null){
 							// ********** AGIR *********
 							provides().agir().raiseBox(boxTemp);
 							System.out.println("$$$$$$$$$$$$$$$$$$$$$$ box Soulevé $$$$$$$$$$$$$$$$$$$");
-					
+							
 							// chercher un nid avec la meme couleur que la box
 							if(searchNestWithColor(boxTemp.getInfoBox().getColor())==1){
 								provides().agir().depositBox();
 							}
+							
 						}else{
 							// ******** AGIR ********
 							provides().agir().moveRandomly();	
@@ -114,7 +114,9 @@ public class EcoRobotsImpl extends EcoRobots {
 
 					private int searchNestWithColor(Color color) {
 						// Chercher le nid avec la meme couleur dans listNests
+						System.out.println(":::::::::::::::::::::searching Nest With Color ... :::::::::::::::::");
 						boolean nonTrouve = true;
+						
 						while(nonTrouve){
 							if(myPosition.getPosX() < myBox.getInfoBox().getPosition().getPosX()){
 								provides().agir().goStraight();
@@ -130,6 +132,7 @@ public class EcoRobotsImpl extends EcoRobots {
 							}
 							if(myPosition.equals(myBox.getInfoBox().getPosition())){
 								nonTrouve = true;
+								System.out.println("ùùùùùùùùùùùù NID TROUVE ùùùùùùùùùùù");
 								return 1;
 							}
 						}
@@ -245,7 +248,7 @@ public class EcoRobotsImpl extends EcoRobots {
 								turnLeft();
 							break;
 						case 4:
-							if (myPosition.getPosX() + 1 < tailleGrille - 1)
+							if (myPosition.getPosY() + 1 < tailleGrille - 1)
 								turnRight();
 							break;
 						default:
@@ -256,6 +259,8 @@ public class EcoRobotsImpl extends EcoRobots {
 					@Override
 					public void depositBox() {
 						// TODO : notifier la GUI pour déposer la box
+						// TODO : MAJ ENERGIE
+						System.out.println("++++++ BOX déposé ++++");
 						myBox = null;
 					}
 
