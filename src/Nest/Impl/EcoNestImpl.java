@@ -3,6 +3,7 @@ package Nest.Impl;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import Nest.Interface.IConfigureEcoNest;
 import Nest.Interface.ICreateNest;
 import Nest.Interface.IGettersNest;
 import Nest.Interface.INestsInfo;
@@ -12,7 +13,7 @@ import datatype.Position;
 public class EcoNestImpl extends EcoNest{
 
 	private static ArrayList<Nest.Component> listNests = new ArrayList<Nest.Component>();
-	
+	private int tailleGrille;
 	@Override
 	protected void start() {
 		System.out.println("Start de ECONEST");
@@ -86,6 +87,21 @@ public class EcoNestImpl extends EcoNest{
 				/************************************************************************************************/
 
 				return false;
+			}
+		};
+	}
+
+	@Override
+	protected IConfigureEcoNest make_setConfiguration() {
+		// TODO Auto-generated method stub
+		return new IConfigureEcoNest() {
+			
+			@Override
+			public void setTailleGrille(int n) {
+				tailleGrille=n;
+				System.out.println("*****La taille de la grille est configuré à "+n+"X"+n+" pour l'ecosysteme Nest*****");
+				
+				
 			}
 		};
 	}

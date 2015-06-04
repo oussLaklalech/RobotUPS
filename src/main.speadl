@@ -14,10 +14,14 @@ import gui.Interface.IGetInfo
 import gui.Interface.IManageCell
 import gui.Interface.IManageGui
 import java.awt.Color
+import Robot.interfaces.IConfigureEcoRobots
+import box.Interface.IConfigureEcoBox
+import Nest.Interface.IConfigureEcoNest
 
 namespace Robot {
 	ecosystem EcoRobots {
 		provides create: ICreateRobot
+		provides setConfiguration : IConfigureEcoRobots
 		requires robotManageGui : IManageGui
 		requires informationNeed : IInfo
 		requires informationAboutBoxesNeed : IBoxesInfo
@@ -34,6 +38,7 @@ namespace Robot {
 	ecosystem EcoBoxes {
 		provides create: ICreateBox
 		provides informationAboutBoxesGive : IBoxesInfo
+		provides setConfiguration : IConfigureEcoBox
 		
 		species Box(id : int,color: Color, position: Position) {
 			provides getInfoBox: IGettersBox	
@@ -45,6 +50,9 @@ namespace Robot {
 		
 		
 			provides manageGui :IManageGui
+			requires configureSystemeRobots : IConfigureEcoRobots
+			requires configureSystemeNests : IConfigureEcoNest
+			requires configureSystemeBoxs : IConfigureEcoBox
 			requires createRobots : ICreateRobot
 			requires createNests : ICreateNest
 		
@@ -59,6 +67,7 @@ namespace Robot {
 	ecosystem EcoNest {
 		provides create: ICreateNest
 		provides informationAboutNestsGive : INestsInfo
+		provides setConfiguration : IConfigureEcoNest
 		
 		species Nest(id: int,color: Color, position: Position){
 			provides getInfoNest: IGettersNest
@@ -76,6 +85,10 @@ namespace Robot {
 		part gridGui : GridGui{
 			bind createNests to nests.create
 			bind createRobots to robots.create
+			bind configureSystemeRobots to robots.setConfiguration
+			bind configureSystemeNests to nests.setConfiguration
+			bind configureSystemeBoxs to boxes.setConfiguration
+			
 		}
 		
 		
