@@ -245,19 +245,19 @@ public class EcoRobotsImpl extends EcoRobots {
 						int randomNum = rand.nextInt(4) + 1;
 						switch (randomNum) {
 						case 1:
-							if (myPosition.getPosX() - 1 > 0)
+							if (myPosition.getPosX() - 1 >= 0)
 								goBack();
 							break;
 						case 2:
-							if (myPosition.getPosX() + 1 < tailleGrille - 1)
+							if (myPosition.getPosX() + 1 <= tailleGrille - 1)
 								goStraight();
 							break;
 						case 3:
-							if (myPosition.getPosY() - 1 > 0)
+							if (myPosition.getPosY() - 1 >= 0)
 								turnLeft();
 							break;
 						case 4:
-							if (myPosition.getPosY() + 1 < tailleGrille - 1)
+							if (myPosition.getPosY() + 1 <= tailleGrille - 1)
 								turnRight();
 							break;
 						default:
