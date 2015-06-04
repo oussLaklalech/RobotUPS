@@ -6,5 +6,5 @@ import datatype.Position;
 
 public interface ICreateNest {
 	public Nest.Component createStandaloneNest(int id, Color color, Position position);
-	public boolean createNests(int nbreNestToCreate);
+	
 }

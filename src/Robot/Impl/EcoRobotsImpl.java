@@ -17,23 +17,18 @@ import datatype.Position;
 public class EcoRobotsImpl extends EcoRobots {
 
 	private ArrayList<Robot.Component> listRobots = new ArrayList<Robot.Component>();
+	static int nombreRobots = 0;
 	private int tailleGrille;
-	private AtomicInteger vitesseSyst =new AtomicInteger(1);
+	private AtomicInteger vitesseSyst = new AtomicInteger(1);
 
 	@Override
 	protected void start() {
 		System.out.println("Start de ECOROBOT");
-		/*
-		 * Robot.Component r1 = this.make_create().createStandaloneRobot(1,
-		 * Color.BLACK, new Position(5, 2)); Robot.Component r2 =
-		 * this.make_create().createStandaloneRobot(2, Color.GREEN, new
-		 * Position(10, 1)); listRobots.add(r1); listRobots.add(r2);
-		 */
+
 	}
 
 	@Override
-	protected Robot make_Robot(final int id, final Color color,
-			final Position position) {
+	protected Robot make_Robot(final Color color, final Position position) {
 
 		return new Robot() {
 
@@ -56,15 +51,14 @@ public class EcoRobotsImpl extends EcoRobots {
 
 			@Override
 			protected void start() {
-
-				System.out.println("Init Robot num : " + id);
+				myColor = color;
+				myPosition = position;
+				myId = ++nombreRobots;
+				myEnergy = 100; // TODO : Configurable plus tard
+				System.out.println("Init Robot num : " + myId);
 				System.out.println("Ma couleur est : " + color.toString());
 				System.out.println("Ma position initiale est : X = "
 						+ position.getPosX() + " et Y = " + position.getPosY());
-				myColor = color;
-				myPosition = position;
-				myId = id;
-				myEnergy = 100; // TODO : Configurable plus tard
 
 			}
 
@@ -97,7 +91,7 @@ public class EcoRobotsImpl extends EcoRobots {
 						System.out.println("Je suis entrain de reflechir");
 						provides().percevoir().regarderAutour();
 						provides().agir().moveRandomly();
-						
+
 					}
 				};
 			}
@@ -149,11 +143,11 @@ public class EcoRobotsImpl extends EcoRobots {
 						// ou X-1)
 						Position lastPos = new Position(myPosition.getPosX(),
 								myPosition.getPosY());
-						
+
 						myPosition.setPosX(myPosition.getPosX() + 1);
 						System.out.println(myPosition);
 						System.out.println("je vais tout droit");
-						
+
 						eco_requires().robotManageGui().RobotMoveNotification(
 								lastPos,
 								new Position(myPosition.getPosX(), myPosition
@@ -170,7 +164,7 @@ public class EcoRobotsImpl extends EcoRobots {
 						myPosition.setPosX(myPosition.getPosX() - 1);
 						System.out.println(myPosition);
 						System.out.println("je vais deriére");
-						
+
 						eco_requires().robotManageGui().RobotMoveNotification(
 								lastPos,
 								new Position(myPosition.getPosX(), myPosition
@@ -182,15 +176,16 @@ public class EcoRobotsImpl extends EcoRobots {
 						// TODO : Soulever la boîte
 
 					}
+
 					@Override
 					public void moveRandomly() {
 						Random rand = new Random();
-try {
-	Thread.sleep(5000/vitesseSyst.get());
-} catch (InterruptedException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-}
+						try {
+							Thread.sleep(2000 / vitesseSyst.get());
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						// nextInt is normally exclusive of the top value,
 						// so add 1 to make it inclusive
 						int randomNum = rand.nextInt(4) + 1;
@@ -226,9 +221,11 @@ try {
 	protected ICreateRobot make_create() {
 		return new ICreateRobot() {
 			@Override
-			public Robot.Component createStandaloneRobot(int id, Color color,
+			public Robot.Component createStandaloneRobot(Color color,
 					Position position) {
-				return newRobot(id, color, position);
+				Robot.Component r = newRobot(color, position);
+				listRobots.add(r);
+				return r;
 			}
 
 			@Override
@@ -236,15 +233,29 @@ try {
 				try {
 					// fair un random sur les element coulour et position en
 					// respectant la taille de la gui
-					Robot.Component r1 = newRobot(2, Color.GREEN, new Position(
-							10, 1));
-					Robot.Component r2 = newRobot(3, Color.blue, new Position(
-							3, 5));
-					Robot.Component r3 = newRobot(4, Color.yellow,
-							new Position(3, 4));
-					listRobots.add(r1);
-					listRobots.add(r2);
-					listRobots.add(r3);
+					Color color;
+					Random rand = new Random();
+					for (int i = 0; i < nbreRobotsToCreate; i++) {
+					
+						int randomForColor = rand.nextInt(3) + 1;
+						switch (randomForColor) {
+						case 1:
+							color = new Color(15, 134, 36);
+							break;
+						case 2:
+							color = Color.RED;
+							break;
+						case 3:
+							color = Color.BLUE;
+							break;
+
+						default:
+							color = Color.GREEN;
+							break;
+						}
+						Robot.Component r1 = createStandaloneRobot(color,
+								new Position(rand.nextInt(12), rand.nextInt(12)));
+					}
 					for (final Robot.Component r : listRobots) {
 						Thread t = new Thread() {
 							public void run() {
@@ -282,7 +293,7 @@ try {
 			@Override
 			public void setVitesse(int n) {
 				vitesseSyst.set(n);
-				System.out.println("Vitesse du système MAJ : "+n );
+				System.out.println("Vitesse du système MAJ : " + n);
 			}
 		};
 	}

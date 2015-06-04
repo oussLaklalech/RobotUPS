@@ -200,7 +200,8 @@ public class GridGuiImpl extends GridGui {
 				// cell.setSize(20,20);
 				cell.setPreferredSize(new Dimension(30, 30));
 				cell.setOpaque(true);
-				cell.setBackground(Color.RED);
+				cell.setBackground(Color.WHITE);
+				cell.setForeground(Color.WHITE);
 				cell.setBorder(blackline);
 				// cell.setText(p.getPosX()+"x"+p.getPosY());
 				gridpane.add(cell);
@@ -214,13 +215,15 @@ public class GridGuiImpl extends GridGui {
 
 					@Override
 					public void RobotQuit() {
-						cell.setBackground(Color.gray);
-
+						cell.setBackground(Color.WHITE);
+						cell.setText("");
 					}
 
 					@Override
 					public void RobotArrive(Color color) {
 						cell.setBackground(color);
+						cell.setText("<html><b style='margin-left:5px;'>R</b></html>");
+						
 
 					}
 				};

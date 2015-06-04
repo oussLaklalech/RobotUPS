@@ -7,6 +7,6 @@ import Robot.EcoRobots;
 import Robot.EcoRobots.Robot;
 
 public interface ICreateRobot {
-	public EcoRobots.Robot.Component createStandaloneRobot(int id, Color color, Position position);
+	public EcoRobots.Robot.Component createStandaloneRobot( Color color, Position position);
 	public boolean createRobots(int nbreRobotsToCreate);
 }

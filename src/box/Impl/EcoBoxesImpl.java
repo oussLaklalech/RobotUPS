@@ -2,8 +2,10 @@ package box.Impl;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Random;
 
 import Robot.EcoBoxes;
+import Robot.EcoRobots.Robot;
 import box.Interface.IBoxesInfo;
 import box.Interface.IConfigureEcoBox;
 import box.Interface.ICreateBox;
@@ -14,17 +16,18 @@ public class EcoBoxesImpl extends EcoBoxes{
 
 	private static ArrayList<Box.Component> listBoxes = new ArrayList<Box.Component>();
     private int tailleGrille;
+    static int nombreBoxes = 0;
 	@Override
 	protected void start() {
 		System.out.println("Start de ECOBOX");
-		Box.Component b1 = this.make_create().createStandaloneBox(1, Color.BLUE, new Position(5, 2));
-		Box.Component b2 = this.make_create().createStandaloneBox(2, Color.GREEN, new Position(0, 1));
+		Box.Component b1 = this.make_create().createStandaloneBox( Color.BLUE, new Position(5, 2));
+		Box.Component b2 = this.make_create().createStandaloneBox( Color.GREEN, new Position(0, 1));
 		listBoxes.add(b1);
 		listBoxes.add(b2);
 	}
 	
 	@Override
-	protected Box make_Box(final int id, final Color color, final Position position) {
+	protected Box make_Box(final Color color, final Position position) {
 		return new Box(){
 			private Color myColor;
 			private Position myPosition;
@@ -32,12 +35,14 @@ public class EcoBoxesImpl extends EcoBoxes{
 			
 			@Override
 			protected void start() {
-				System.out.println("Init Box num : "+id);
-				System.out.println("Ma couleur est : "+color.toString());
-				System.out.println("Ma position initiale est : X = "+position.getPosX()+" et Y = "+position.getPosY());
+				
 				myColor = color;
 				myPosition = position;
-				myId = id;
+				myId  = ++nombreBoxes;
+				System.out.println("*****************BOITE N = "+myId+" CREE ****************");
+				System.out.println("Init Box num : "+myId);
+				System.out.println("Ma couleur est : "+color.toString());
+				System.out.println("Ma position initiale est : X = "+position.getPosX()+" et Y = "+position.getPosY());
 			}
 
 			@Override
@@ -74,10 +79,41 @@ public class EcoBoxesImpl extends EcoBoxes{
 		return new ICreateBox() {
 			
 			@Override
-			public Box.Component createStandaloneBox(int id, Color color, Position position) {
-				System.out.println("*****************BOITE N = "+id+" CREE ****************");
-				return newBox(id, color, position);
+			public Box.Component createStandaloneBox( Color color, Position position) {
+				
+				
+				return newBox( color, position);
 			}
+
+			@Override
+			public boolean createBoxes(int nbreBoxToCreate) {
+				// fair un random sur les element coulour et position en
+				// respectant la taille de la gui
+				Color color;
+				Random rand = new Random();
+				for (int i = 0; i < nbreBoxToCreate; i++) {
+				
+					int randomForColor = rand.nextInt(3) + 1;
+					switch (randomForColor) {
+					case 1:
+						color = new Color(15, 134, 36);
+						break;
+					case 2:
+						color = Color.RED;
+						break;
+					case 3:
+						color = Color.BLUE;
+						break;
+
+					default:
+						color = Color.GREEN;
+						break;
+					}
+					Box.Component r1 = createStandaloneBox(color,
+							new Position(rand.nextInt(12), rand.nextInt(12)));
+				
+			}
+				return true;}
 		};
 	}
 

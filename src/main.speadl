@@ -27,7 +27,7 @@ namespace Robot {
 		requires informationAboutBoxesNeed : IBoxesInfo
 		requires informationAboutNestsNeed : INestsInfo
 				
-		species Robot(id : int,color: Color, position: Position) {
+		species Robot(color: Color, position: Position) {
 			provides percevoir: IEye
 			provides decider: IBrain
 			provides agir: IFootHand
@@ -40,7 +40,7 @@ namespace Robot {
 		provides informationAboutBoxesGive : IBoxesInfo
 		provides setConfiguration : IConfigureEcoBox
 		
-		species Box(id : int,color: Color, position: Position) {
+		species Box(color: Color, position: Position) {
 			provides getInfoBox: IGettersBox	
 		
 		}
