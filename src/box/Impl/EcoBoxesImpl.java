@@ -19,10 +19,6 @@ public class EcoBoxesImpl extends EcoBoxes{
 	@Override
 	protected void start() {
 		System.out.println("Start de ECOBOX");
-		Box.Component b1 = this.make_create().createStandaloneBox( Color.BLUE, new Position(5, 2));
-		Box.Component b2 = this.make_create().createStandaloneBox( Color.GREEN, new Position(0, 1));
-		listBoxes.add(b1);
-		listBoxes.add(b2);
 	}
 	
 	@Override
@@ -79,9 +75,9 @@ public class EcoBoxesImpl extends EcoBoxes{
 			
 			@Override
 			public Box.Component createStandaloneBox( Color color, Position position) {
-				
-				
-				return newBox( color, position);
+				Box.Component boxTemp = newBox( color, position);
+				listBoxes.add(boxTemp);
+				return boxTemp;
 			}
 
 			@Override
@@ -129,9 +125,10 @@ public class EcoBoxesImpl extends EcoBoxes{
 				// retourne l'id de la box (ou le composant Box) si existe
 				// retourne -1 sinon (ou null)
 				System.out.println("*** getBoxInPosition ****");
+				System.out.println("nombre de boxes : "+listBoxes.size());
+				System.out.println("position Box recherché : "+positionBox);
 				for(int i=0;i<listBoxes.size();i++){
-					System.out.println(listBoxes.get(i).getInfoBox().getPosition());
-					System.out.println(positionBox);
+					System.out.println("position BOX : "+listBoxes.get(i).getInfoBox().getPosition());
 					if(listBoxes.get(i).getInfoBox().getPosition().equals(positionBox)){
 						return listBoxes.get(i);
 					}
