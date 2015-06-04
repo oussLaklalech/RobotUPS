@@ -110,7 +110,7 @@ public class EcoBoxesImpl extends EcoBoxes{
 						break;
 					}
 					Box.Component r1 = createStandaloneBox(color,
-							new Position(rand.nextInt(12), rand.nextInt(12)));
+							new Position(rand.nextInt(tailleGrille), rand.nextInt(tailleGrille)));
 				
 			}
 				return true;}

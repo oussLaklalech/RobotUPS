@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import Robot.EcoBoxes.Box;
+import Robot.EcoNest.Nest;
 import Robot.EcoRobots;
 import Robot.interfaces.IBrain;
 import Robot.interfaces.IConfigureEcoRobots;
@@ -20,6 +21,7 @@ public class EcoRobotsImpl extends EcoRobots {
 	static int nombreRobots = 0;
 	private int tailleGrille;
 	private AtomicInteger vitesseSyst = new AtomicInteger(1);
+	private static ArrayList<Nest.Component> listNests = new ArrayList<Nest.Component>();
 
 	@Override
 	protected void start() {
@@ -36,6 +38,7 @@ public class EcoRobotsImpl extends EcoRobots {
 			private Position myPosition;
 			private int myId;
 			private int myEnergy;
+			private Box.Component myBox;
 
 			private void updateEnergy() {
 				if (myEnergy > 3) {
@@ -67,16 +70,17 @@ public class EcoRobotsImpl extends EcoRobots {
 				return new IEye() {
 
 					@Override
-					public void regarderAutour() {
-						System.out.println("je regarde autour de moi !!");
-						Box.Component box = eco_requires()
-								.informationAboutBoxesNeed().getBoxInPosition(
-										myPosition);
-						if (box != null)
-							System.out.println("PERCEPTION : "
-									+ box.getInfoBox().getColor());
-						else
+					public Box.Component lookAtMyPosition() {
+						System.out.println("je regarde s'il y a une boîte !!");
+						Box.Component box = eco_requires().informationAboutBoxesNeed().getBoxInPosition(myPosition);
+						if(box != null){
+							System.out.println("PERCEPTION : "+box.getInfoBox().getColor());
+							return box;
+						}
+						else{
 							System.out.println("pas de box dans l'emplacement");
+							return null;
+						}
 					}
 				};
 			}
@@ -87,11 +91,21 @@ public class EcoRobotsImpl extends EcoRobots {
 
 					@Override
 					public void reflechir() {
-						// TODO : Algorithme de décision
 						System.out.println("Je suis entrain de reflechir");
-						provides().percevoir().regarderAutour();
-						provides().agir().moveRandomly();
-
+						// ********** PERCEVOIR **********
+						Box.Component boxTemp = provides().percevoir().lookAtMyPosition();
+						// ********* DECIDER **********
+						// Si le robot retrouve une boîte dans la position, il soulève la boîte
+						if(boxTemp != null){
+							// ********** AGIR *********
+							provides().agir().raiseBox(boxTemp);
+							// TODO : chercher un nid
+							provides().agir().depositBox();
+						// Sinn, il continue la recherche
+						}else{
+							// ******** AGIR ********
+							provides().agir().moveRandomly();	
+						}
 					}
 				};
 			}
@@ -107,13 +121,14 @@ public class EcoRobotsImpl extends EcoRobots {
 						myPosition.setPosY(myPosition.getPosY() - 1);
 						System.out.println(myPosition);
 						System.out.println("je tourne à gauche");
-						// System.out.println("voici les coordonnées : X = "+myPosition.getPosX());
-						// System.out.println("voici les coordonnées : Y = "+myPosition.getPosY());
+					
 						updateEnergy();
-						eco_requires().robotManageGui().RobotMoveNotification(
+						eco_requires().robotManageGui()
+								.RobotMoveNotification(
 								lastPos,
-								new Position(myPosition.getPosX(), myPosition
-										.getPosY()), myColor);
+								new Position(myPosition.getPosX(), myPosition.getPosY()), 
+								myColor
+								);
 					}
 
 					@Override
@@ -131,12 +146,7 @@ public class EcoRobotsImpl extends EcoRobots {
 						updateEnergy();
 					}
 
-					@Override
-					public void stop() {
-						// TODO Auto-generated method stub
-
-					}
-
+				
 					@Override
 					public void goStraight() {
 						// TODO : Aller tout droit dépend du sens du Robot (X+1
@@ -169,11 +179,13 @@ public class EcoRobotsImpl extends EcoRobots {
 								lastPos,
 								new Position(myPosition.getPosX(), myPosition
 										.getPosY()), myColor);
+						updateEnergy();
 					}
 
 					@Override
-					public void raiseBox() {
-						// TODO : Soulever la boîte
+					public void raiseBox(Box.Component box) {
+						// TODO : notifier la GUI pour la box
+						myBox = box;
 
 					}
 
@@ -209,6 +221,12 @@ public class EcoRobotsImpl extends EcoRobots {
 						default:
 							break;
 						}
+					}
+
+					@Override
+					public void depositBox() {
+						// TODO : notifier la GUI pour déposer la box
+						myBox = null;
 					}
 
 				};
@@ -254,7 +272,7 @@ public class EcoRobotsImpl extends EcoRobots {
 							break;
 						}
 						Robot.Component r1 = createStandaloneRobot(color,
-								new Position(rand.nextInt(12), rand.nextInt(12)));
+								new Position(rand.nextInt(tailleGrille), rand.nextInt(tailleGrille)));
 					}
 					for (final Robot.Component r : listRobots) {
 						Thread t = new Thread() {
@@ -287,7 +305,8 @@ public class EcoRobotsImpl extends EcoRobots {
 				System.out
 						.println("*****La taille de la grille est configuré à "
 								+ n + "X" + n + " pour l'ecosystéme Robot*****");
-
+				// On récupère les nids avec leurs couleurs & positions
+				listNests = requires().informationAboutNestsNeed().getAllNests();
 			}
 
 			@Override

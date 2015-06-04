@@ -15,20 +15,6 @@ import box.Impl.EcoBoxesImpl;
 import datatype.Position;
 
 public class EnvironnementImpl extends Environnement{	
-
-	@Override
-	protected IInfo make_informationGive() {
-		// TODO Auto-generated method stub
-		return new IInfo() {
-			
-			@Override
-			public Position getMyPosition(int idRobot) {
-				// TODO Auto-generated method stub
-				System.out.println("GET POSITION OF ROBOT : "+idRobot);
-				return null;
-			}
-		};
-	}
 	
 	@Override
 	protected EcoRobots make_robots() {

@@ -44,8 +44,8 @@ public class GridGuiImpl extends GridGui {
 	private ArrayList<CellGui.Component> listCells = new ArrayList<CellGui.Component>();
 
 	public void setSystemeBounds(int n) {
-		requires().configureSystemeBoxs().setTailleGrille(n);
 		requires().configureSystemeNests().setTailleGrille(n);
+		requires().configureSystemeBoxs().setTailleGrille(n);
 		requires().configureSystemeRobots().setTailleGrille(n);
 	}
 

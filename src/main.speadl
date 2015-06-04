@@ -19,11 +19,20 @@ import box.Interface.IConfigureEcoBox
 import Nest.Interface.IConfigureEcoNest
 
 namespace Robot {
+	ecosystem EcoNest {
+		provides create: ICreateNest
+		provides informationAboutNestsGive : INestsInfo
+		provides setConfiguration : IConfigureEcoNest
+		
+		species Nest(color: Color, position: Position){
+			provides getInfoNest: IGettersNest
+		}
+	}
+	
 	ecosystem EcoRobots {
 		provides create: ICreateRobot
 		provides setConfiguration : IConfigureEcoRobots
 		requires robotManageGui : IManageGui
-		requires informationNeed : IInfo
 		requires informationAboutBoxesNeed : IBoxesInfo
 		requires informationAboutNestsNeed : INestsInfo
 				
@@ -42,13 +51,10 @@ namespace Robot {
 		
 		species Box(color: Color, position: Position) {
 			provides getInfoBox: IGettersBox	
-		
 		}
 	}
 	
 	ecosystem GridGui {
-		
-		
 			provides manageGui :IManageGui
 			requires configureSystemeRobots : IConfigureEcoRobots
 			requires configureSystemeNests : IConfigureEcoNest
@@ -57,27 +63,13 @@ namespace Robot {
 			requires createNests : ICreateNest
 		
 		species CellGui(position : Position) {
-			
 			provides manageCell :IManageCell
 			provides getInfo : IGetInfo
-		
-		}
-		
-	}
-	ecosystem EcoNest {
-		provides create: ICreateNest
-		provides informationAboutNestsGive : INestsInfo
-		provides setConfiguration : IConfigureEcoNest
-		
-		species Nest(id: int,color: Color, position: Position){
-			provides getInfoNest: IGettersNest
-		}
+		}	
 	}
 	
 	ecosystem Environnement {
-		
-		provides informationGive : IInfo
-		
+				
 		part nests : EcoNest
 		
 		part boxes : EcoBoxes
@@ -91,13 +83,10 @@ namespace Robot {
 			
 		}
 		
-		
-		
 		part robots : EcoRobots{
-			bind informationNeed to informationGive
+			bind informationAboutNestsNeed to nests.informationAboutNestsGive
 			bind informationAboutBoxesNeed to boxes.informationAboutBoxesGive
 			bind robotManageGui to gridGui.manageGui
-			bind informationAboutNestsNeed to nests.informationAboutNestsGive
 		}
 		
 		
