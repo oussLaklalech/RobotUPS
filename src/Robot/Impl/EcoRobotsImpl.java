@@ -119,24 +119,33 @@ public class EcoRobotsImpl extends EcoRobots {
 						// Chercher le nid avec la meme couleur dans listNests
 						System.out.println(":::::::::::::::::::::searching Nest With Color ... :::::::::::::::::");
 						boolean nonTrouve = true;
-						
-						while(nonTrouve){
-							if(myPosition.getPosX() < myBox.getInfoBox().getPosition().getPosX()){
-								provides().agir().goStraight();
-							}
-							if(myPosition.getPosX() > myBox.getInfoBox().getPosition().getPosX()){
-								provides().agir().goBack();
-							}
-							if(myPosition.getPosY() > myBox.getInfoBox().getPosition().getPosY()){
-								provides().agir().turnLeft();
-							}
-							if(myPosition.getPosY() > myBox.getInfoBox().getPosition().getPosY()){
-								provides().agir().turnRight();
-							}
-							if(myPosition.equals(myBox.getInfoBox().getPosition())){
-								nonTrouve = true;
-								System.out.println("שששששששששששש NID TROUVE ששששששששששש");
-								return 1;
+						Nest.Component nestTemp = eco_requires().informationAboutNestsNeed().getNestWithColor(color);
+						if(nestTemp != null){
+	
+							while(nonTrouve){
+								try {
+									Thread.sleep(2000 / vitesseSyst.get());
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								if(myPosition.getPosX() < nestTemp.getInfoNest().getPosition().getPosX()){
+									provides().agir().goStraight();
+								}
+								if(myPosition.getPosX() > nestTemp.getInfoNest().getPosition().getPosX()){
+									provides().agir().goBack();
+								}
+								if(myPosition.getPosY() > nestTemp.getInfoNest().getPosition().getPosY()){
+									provides().agir().turnLeft();
+								}
+								if(myPosition.getPosY() < nestTemp.getInfoNest().getPosition().getPosY()){
+									provides().agir().turnRight();
+								}
+								if(myPosition.equals(nestTemp.getInfoNest().getPosition())){
+									nonTrouve = true;
+									System.out.println("שששששששששששש NID TROUVE ששששששששששש");
+									return 1;
+								}
 							}
 						}
 						return -1;
@@ -244,19 +253,19 @@ public class EcoRobotsImpl extends EcoRobots {
 						int randomNum = rand.nextInt(4) + 1;
 						switch (randomNum) {
 						case 1:
-							if (myPosition.getPosX() - 1 > 0)
+							if (myPosition.getPosX() - 1 >= 0)
 								goBack();
 							break;
 						case 2:
-							if (myPosition.getPosX() + 1 < tailleGrille - 1)
+							if (myPosition.getPosX() + 1 <= tailleGrille - 1)
 								goStraight();
 							break;
 						case 3:
-							if (myPosition.getPosY() - 1 > 0)
+							if (myPosition.getPosY() - 1 >= 0)
 								turnLeft();
 							break;
 						case 4:
-							if (myPosition.getPosY() + 1 < tailleGrille - 1)
+							if (myPosition.getPosY() + 1 <= tailleGrille - 1)
 								turnRight();
 							break;
 						default:
