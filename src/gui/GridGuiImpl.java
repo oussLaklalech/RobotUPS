@@ -52,7 +52,7 @@ public class GridGuiImpl extends GridGui {
 	public void initInterfaceConfig() {
 		buttonBox = new JButton("Crée des Boxs");
 		buttonRobot = new JButton("Crée des Robots");
-		buttonVitesse=new JButton("Changer la vitesse");
+		buttonVitesse = new JButton("Changer la vitesse");
 		spinnerRobot = new JSpinner();
 		spinnerBox = new JSpinner();
 		spinnerVitesse = new JSpinner();
@@ -84,7 +84,17 @@ public class GridGuiImpl extends GridGui {
 
 			}
 		});
-		
+
+		buttonBox.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				requires().createBox().createBoxes(
+						(int) spinnerBox.getValue());
+
+			}
+		});
+
 		buttonRobot.addActionListener(new ActionListener() {
 
 			@Override
@@ -94,14 +104,14 @@ public class GridGuiImpl extends GridGui {
 
 			}
 		});
-		
+
 		buttonVitesse.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int v=(int) spinnerVitesse.getValue();
-				if(v>0){
-				requires().configureSystemeRobots().setVitesse(v);
+				int v = (int) spinnerVitesse.getValue();
+				if (v > 0) {
+					requires().configureSystemeRobots().setVitesse(v);
 				}
 
 			}
@@ -138,14 +148,14 @@ public class GridGuiImpl extends GridGui {
 				bAddAccount.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						
 
 						String tailleString = textTailleGrille.getText();
 						try {
 
 							int taille = Integer.parseInt(tailleString);
+							if(!(taille>50||taille<1)){
 							initInterfaceConfig();
-							setSystemeBounds(taille);
+
 							panelTailleGrille.removeAll();
 
 							panelTailleGrille.revalidate();
@@ -165,8 +175,16 @@ public class GridGuiImpl extends GridGui {
 							gridpane.setBorder(blackline);
 							containerPane.add(gridpane);
 							f.pack();
-
+							setSystemeBounds(taille);
 							// f.setExtendedState(JFrame.MAXIMIZED_BOTH);
+							
+							
+							}
+							else{
+								JOptionPane.showMessageDialog(f,
+										"Veuillez entrer un nombre de 1 à 50 maximum !", "Erreur",
+										JOptionPane.WARNING_MESSAGE);
+							}
 						} catch (NumberFormatException nfe) {
 							JOptionPane.showMessageDialog(f,
 									"Veuillez entrer un entier !", "Erreur",
@@ -222,8 +240,27 @@ public class GridGuiImpl extends GridGui {
 					@Override
 					public void RobotArrive(Color color) {
 						cell.setBackground(color);
-						cell.setText("<html><b style='margin-left:5px;'>R</b></html>");
-						
+						cell.setText("<html><b>R</b></html>");
+
+					}
+
+					@Override
+					public void BoxArrive(Color color) {
+						cell.setBackground(color);
+						cell.setText("<html><b>B</b></html>");
+
+					}
+
+					@Override
+					public void BoxQuit() {
+						cell.setBackground(Color.WHITE);
+						cell.setText("");
+					}
+
+					@Override
+					public void NestArrive(Color color) {
+						cell.setBackground(color);
+						cell.setText("<html><b>N</b></html>");
 
 					}
 				};
@@ -262,12 +299,46 @@ public class GridGuiImpl extends GridGui {
 			public CellGui.Component getCellByPos(Position pos) {
 
 				for (CellGui.Component cell : listCells) {
+
 					Position position = cell.getInfo().getPosition();
+
 					if (pos.getPosX() == position.getPosX())
-						if (pos.getPosY() == position.getPosY())
+						if (pos.getPosY() == position.getPosY()) {
 							return cell;
+						}
 				}
 				return null;
+			}
+
+			@Override
+			public void NestCreateNotification(Position pos, Color color) {
+				// TODO Auto-generated method stub
+				CellGui.Component cell = getCellByPos(pos);
+			
+				cell.manageCell().NestArrive(color);
+			}
+
+			@Override
+			public void BoxCreateNotification(Position pos, Color color) {
+				// TODO Auto-generated method stub
+				CellGui.Component cell = getCellByPos(pos);
+				
+				cell.manageCell().BoxArrive(color);
+			}
+
+			@Override
+			public void BoxPriseNotification(Position pos, Color color) {
+				CellGui.Component cell = getCellByPos(pos);
+				
+				cell.manageCell().BoxQuit();
+			}
+
+			@Override
+			public void RobotCreateNotification(Position pos, Color color) {
+				CellGui.Component cell = getCellByPos(pos);
+			
+				cell.manageCell().RobotArrive(color);
+				
 			}
 		};
 	}

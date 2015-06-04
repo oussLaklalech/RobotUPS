@@ -23,7 +23,7 @@ namespace Robot {
 		provides create: ICreateNest
 		provides informationAboutNestsGive : INestsInfo
 		provides setConfiguration : IConfigureEcoNest
-		
+		requires nestManageGui : IManageGui
 		species Nest(color: Color, position: Position){
 			provides getInfoNest: IGettersNest
 		}
@@ -48,7 +48,7 @@ namespace Robot {
 		provides create: ICreateBox
 		provides informationAboutBoxesGive : IBoxesInfo
 		provides setConfiguration : IConfigureEcoBox
-		
+		requires boxManageGui : IManageGui
 		species Box(color: Color, position: Position) {
 			provides getInfoBox: IGettersBox	
 		}
@@ -60,7 +60,7 @@ namespace Robot {
 			requires configureSystemeNests : IConfigureEcoNest
 			requires configureSystemeBoxs : IConfigureEcoBox
 			requires createRobots : ICreateRobot
-			requires createNests : ICreateNest
+			requires createBox : ICreateBox
 		
 		species CellGui(position : Position) {
 			provides manageCell :IManageCell
@@ -71,11 +71,17 @@ namespace Robot {
 	ecosystem Environnement {
 				
 		part nests : EcoNest
+		{
+			bind nestManageGui to gridGui.manageGui
+		}
 		
 		part boxes : EcoBoxes
+		{
+			bind boxManageGui to gridGui.manageGui
+		}
 		
 		part gridGui : GridGui{
-			bind createNests to nests.create
+			bind  createBox to boxes.create
 			bind createRobots to robots.create
 			bind configureSystemeRobots to robots.setConfiguration
 			bind configureSystemeNests to nests.setConfiguration
