@@ -1,6 +1,8 @@
 package Robot.interfaces;
 
+import Robot.EcoBoxes.Box;
+
 public interface IEye {
 
-	void regarderAutour();
+	Box.Component lookAtMyPosition();
 }
