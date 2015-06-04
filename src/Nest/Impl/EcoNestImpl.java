@@ -30,6 +30,17 @@ public class EcoNestImpl extends EcoNest{
 				return listNests;
 			}
 
+			@Override
+			public Robot.EcoNest.Nest.Component getNestWithColor(Color c) {
+				
+				for(int i=0;i<listNests.size();i++){
+					if(listNests.get(i).getInfoNest().getColor().equals(c)){
+						return listNests.get(i);
+					}
+				}
+				return null;
+			}
+
 			
 		};
 	}
