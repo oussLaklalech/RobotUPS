@@ -89,8 +89,13 @@ public class GridGuiImpl extends GridGui {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				requires().createBox().createBoxes(
-						(int) spinnerBox.getValue());
+				int i =(int) spinnerBox.getValue();
+				if(i>0)
+				requires().createBox().createBoxes(i);
+				else
+					JOptionPane.showMessageDialog(f,
+							"Veuillez entrer nombre supérieur à 0 !", "Erreur",
+							JOptionPane.WARNING_MESSAGE);
 
 			}
 		});
@@ -99,9 +104,15 @@ public class GridGuiImpl extends GridGui {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				requires().createRobots().createRobots(
-						(int) spinnerRobot.getValue());
+				int i =(int)spinnerRobot.getValue();
+				if(i>0)
+				requires().createRobots().createRobots(i);
+				else
+					JOptionPane.showMessageDialog(f,
+							"Veuillez entrer nombre supérieur à 0 !", "Erreur",
+							JOptionPane.WARNING_MESSAGE);
 
+				
 			}
 		});
 
@@ -112,6 +123,10 @@ public class GridGuiImpl extends GridGui {
 				int v = (int) spinnerVitesse.getValue();
 				if (v > 0) {
 					requires().configureSystemeRobots().setVitesse(v);
+				}else{
+					JOptionPane.showMessageDialog(f,
+							"Veuillez entrer nombre supérieur à 0 !", "Erreur",
+							JOptionPane.WARNING_MESSAGE);
 				}
 
 			}
@@ -238,10 +253,13 @@ public class GridGuiImpl extends GridGui {
 					}
 
 					@Override
-					public void RobotArrive(Color color) {
+					public void RobotArrive(Color color,boolean hasBox) {
 						cell.setBackground(color);
-						cell.setText("<html><b>R</b></html>");
-
+						if(hasBox){
+						cell.setText("<html><b>Rb</b></html>");
+						}else{
+							cell.setText("<html><b>R</b></html>");
+						}
 					}
 
 					@Override
@@ -288,12 +306,12 @@ public class GridGuiImpl extends GridGui {
 
 			@Override
 			public void RobotMoveNotification(Position lastPos,
-					Position newPos, Color color) {
+					Position newPos, Color color, boolean hasBox) {
 				CellGui.Component lastcell = getCellByPos(lastPos);
 				CellGui.Component newcell = getCellByPos(newPos);
 
 				lastcell.manageCell().RobotQuit();
-				newcell.manageCell().RobotArrive(color);
+				newcell.manageCell().RobotArrive(color,hasBox);
 			}
 
 			public CellGui.Component getCellByPos(Position pos) {
@@ -337,7 +355,7 @@ public class GridGuiImpl extends GridGui {
 			public void RobotCreateNotification(Position pos, Color color) {
 				CellGui.Component cell = getCellByPos(pos);
 			
-				cell.manageCell().RobotArrive(color);
+				cell.manageCell().RobotArrive(color,false);
 				
 			}
 		};

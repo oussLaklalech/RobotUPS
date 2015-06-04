@@ -100,7 +100,7 @@ public class EcoNestImpl extends EcoNest{
 				tailleGrille=n;
 				System.out.println("*****La taille de la grille est configuré à "+n+"X"+n+" pour l'ecosysteme Nest*****");
 				Nest.Component n1 = make_create().createStandaloneNest(Color.RED, new Position((int)tailleGrille/2, (int)tailleGrille/2));
-				Nest.Component n2 = make_create().createStandaloneNest(Color.GREEN, new Position(tailleGrille-1, 0));
+				Nest.Component n2 = make_create().createStandaloneNest(new Color(15, 134, 36), new Position(tailleGrille-1, 0));
 				Nest.Component n3 = make_create().createStandaloneNest(Color.BLUE, new Position(0, (int)tailleGrille-1));
 				
 			}

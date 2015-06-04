@@ -153,7 +153,8 @@ public class EcoRobotsImpl extends EcoRobots {
 								.RobotMoveNotification(
 								lastPos,
 								new Position(myPosition.getPosX(), myPosition.getPosY()), 
-								myColor
+								myColor,
+								myBox!=null
 								);
 					}
 
@@ -167,7 +168,7 @@ public class EcoRobotsImpl extends EcoRobots {
 						eco_requires().robotManageGui().RobotMoveNotification(
 								lastPos,
 								new Position(myPosition.getPosX(), myPosition
-										.getPosY()), myColor);
+										.getPosY()), myColor, myBox!=null);
 
 						updateEnergy();
 					}
@@ -187,7 +188,7 @@ public class EcoRobotsImpl extends EcoRobots {
 						eco_requires().robotManageGui().RobotMoveNotification(
 								lastPos,
 								new Position(myPosition.getPosX(), myPosition
-										.getPosY()), myColor);
+										.getPosY()), myColor,myBox!=null);
 
 						updateEnergy();
 					}
@@ -204,7 +205,7 @@ public class EcoRobotsImpl extends EcoRobots {
 						eco_requires().robotManageGui().RobotMoveNotification(
 								lastPos,
 								new Position(myPosition.getPosX(), myPosition
-										.getPosY()), myColor);
+										.getPosY()), myColor,myBox!=null);
 						updateEnergy();
 					}
 
