@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import Robot.EcoBoxes;
-import Robot.EcoRobots.Robot;
 import box.Interface.IBoxesInfo;
 import box.Interface.IConfigureEcoBox;
 import box.Interface.ICreateBox;
