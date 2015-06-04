@@ -45,10 +45,10 @@ public class EcoRobotsImpl extends EcoRobots {
 					myEnergy = myEnergy - 1;
 					System.out.println(myEnergy);
 				} else {
-					// TODO : Création d'un nouveau Robot
-					System.out.println(myEnergy
-							+ "********************XXXXX*****************");
-					// Suicide
+					// Création d'un nouveau Robot
+					eco_provides().create().createStandaloneRobot(myColor, myPosition);
+					System.out.println("Un Robot vient de créer un autre robot");
+					// TODO : Suicide
 				}
 			}
 
@@ -99,13 +99,39 @@ public class EcoRobotsImpl extends EcoRobots {
 						if(boxTemp != null){
 							// ********** AGIR *********
 							provides().agir().raiseBox(boxTemp);
-							// TODO : chercher un nid
-							provides().agir().depositBox();
-						// Sinn, il continue la recherche
+							// chercher un nid avec la meme couleur que la box
+							if(searchNestWithColor(boxTemp.getInfoBox().getColor())==1){
+								provides().agir().depositBox();
+							}
 						}else{
 							// ******** AGIR ********
 							provides().agir().moveRandomly();	
 						}
+					}
+
+					private int searchNestWithColor(Color color) {
+						// Chercher le nid avec la meme couleur dans listNests
+						boolean nonTrouve = true;
+						while(nonTrouve){
+							if(myPosition.getPosX() < myBox.getInfoBox().getPosition().getPosX()){
+								provides().agir().goStraight();
+							}
+							if(myPosition.getPosX() > myBox.getInfoBox().getPosition().getPosX()){
+								provides().agir().goBack();
+							}
+							if(myPosition.getPosY() > myBox.getInfoBox().getPosition().getPosY()){
+								provides().agir().turnLeft();
+							}
+							if(myPosition.getPosY() > myBox.getInfoBox().getPosition().getPosY()){
+								provides().agir().turnRight();
+							}
+							if(myPosition.equals(myBox.getInfoBox().getPosition())){
+								nonTrouve = true;
+								return 1;
+							}
+						}
+						return -1;
+						
 					}
 				};
 			}
@@ -173,7 +199,7 @@ public class EcoRobotsImpl extends EcoRobots {
 								myPosition.getPosY());
 						myPosition.setPosX(myPosition.getPosX() - 1);
 						System.out.println(myPosition);
-						System.out.println("je vais deriére");
+						System.out.println("je recule");
 
 						eco_requires().robotManageGui().RobotMoveNotification(
 								lastPos,
