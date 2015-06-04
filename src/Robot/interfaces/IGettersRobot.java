@@ -1,11 +1,12 @@
-package Nest.Interface;
+package Robot.interfaces;
 
 import java.awt.Color;
 
 import datatype.Position;
 
-public interface IGettersNest {
+public interface IGettersRobot {
+
 	Position getPosition();
-	Color getColor();
 	int getId();
+	Color getColor();
 }

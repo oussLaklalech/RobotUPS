@@ -1,9 +1,13 @@
 package Robot.interfaces;
 
+import Robot.EcoBoxes.Box;
+
 public interface IFootHand {
 	public void turnLeft();
 	public void turnRight();
-	public void stop();
 	public void goStraight();
-	public void raiseBox();
+	public void goBack();
+	public void raiseBox(Box.Component b);
+	public void depositBox();
+	public void moveRandomly();
 }

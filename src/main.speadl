@@ -10,12 +10,29 @@ import box.Interface.IBoxesInfo
 import box.Interface.ICreateBox
 import box.Interface.IGettersBox
 import datatype.Position
+import gui.Interface.IGetInfo
+import gui.Interface.IManageCell
+import gui.Interface.IManageGui
 import java.awt.Color
+import Robot.interfaces.IConfigureEcoRobots
+import box.Interface.IConfigureEcoBox
+import Nest.Interface.IConfigureEcoNest
 
 namespace Robot {
+	ecosystem EcoNest {
+		provides create: ICreateNest
+		provides informationAboutNestsGive : INestsInfo
+		provides setConfiguration : IConfigureEcoNest
+		
+		species Nest(color: Color, position: Position){
+			provides getInfoNest: IGettersNest
+		}
+	}
+	
 	ecosystem EcoRobots {
 		provides create: ICreateRobot
-		requires informationNeed : IInfo
+		provides setConfiguration : IConfigureEcoRobots
+		requires robotManageGui : IManageGui
 		requires informationAboutBoxesNeed : IBoxesInfo
 		requires informationAboutNestsNeed : INestsInfo
 				
@@ -23,39 +40,55 @@ namespace Robot {
 			provides percevoir: IEye
 			provides decider: IBrain
 			provides agir: IFootHand
+		
 		}
 	}
 	
 	ecosystem EcoBoxes {
 		provides create: ICreateBox
 		provides informationAboutBoxesGive : IBoxesInfo
+		provides setConfiguration : IConfigureEcoBox
 		
 		species Box(id : int,color: Color, position: Position) {
 			provides getInfoBox: IGettersBox	
 		}
 	}
 	
-	ecosystem EcoNest {
-		provides create: ICreateNest
-		provides informationAboutNestsGive : INestsInfo
+	ecosystem GridGui {
+			provides manageGui :IManageGui
+			requires configureSystemeRobots : IConfigureEcoRobots
+			requires configureSystemeNests : IConfigureEcoNest
+			requires configureSystemeBoxs : IConfigureEcoBox
+			requires createRobots : ICreateRobot
+			requires createNests : ICreateNest
 		
-		species Nest(id: int,color: Color, position: Position){
-			provides getInfoNest: IGettersNest
-		}
+		species CellGui(position : Position) {
+			provides manageCell :IManageCell
+			provides getInfo : IGetInfo
+		}	
 	}
 	
 	ecosystem Environnement {
-		
-		provides informationGive : IInfo
+				
+		part nests : EcoNest
 		
 		part boxes : EcoBoxes
 		
-		part nests : EcoNest
+		part gridGui : GridGui{
+			bind createNests to nests.create
+			bind createRobots to robots.create
+			bind configureSystemeRobots to robots.setConfiguration
+			bind configureSystemeNests to nests.setConfiguration
+			bind configureSystemeBoxs to boxes.setConfiguration
+			
+		}
 		
 		part robots : EcoRobots{
-			bind informationNeed to informationGive
-			bind informationAboutBoxesNeed to boxes.informationAboutBoxesGive
 			bind informationAboutNestsNeed to nests.informationAboutNestsGive
+			bind informationAboutBoxesNeed to boxes.informationAboutBoxesGive
+			bind robotManageGui to gridGui.manageGui
 		}
+		
+		
 	}
 }

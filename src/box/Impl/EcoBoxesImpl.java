@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import Robot.EcoBoxes;
 import box.Interface.IBoxesInfo;
+import box.Interface.IConfigureEcoBox;
 import box.Interface.ICreateBox;
 import box.Interface.IGettersBox;
 import datatype.Position;
@@ -12,7 +13,7 @@ import datatype.Position;
 public class EcoBoxesImpl extends EcoBoxes{
 
 	private static ArrayList<Box.Component> listBoxes = new ArrayList<Box.Component>();
-
+    private int tailleGrille;
 	@Override
 	protected void start() {
 		System.out.println("Start de ECOBOX");
@@ -102,6 +103,21 @@ public class EcoBoxesImpl extends EcoBoxes{
 			}
 			
 			
+		};
+	}
+
+	@Override
+	protected IConfigureEcoBox make_setConfiguration() {
+		// TODO Auto-generated method stub
+		return new IConfigureEcoBox() {
+			
+			@Override
+			public void setTailleGrille(int n) {
+				// TODO Auto-generated method stub
+				tailleGrille=n;
+				System.out.println("*****La taille de la grille est configuré à "+n+"X"+n+" pour l'ecosystème Boxes*****");
+				
+			}
 		};
 	}
 

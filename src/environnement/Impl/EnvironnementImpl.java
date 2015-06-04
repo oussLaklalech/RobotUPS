@@ -1,30 +1,20 @@
 package environnement.Impl;
 
+import gui.GridGuiImpl;
+import gui.Interface.IManageGui;
 import Nest.Impl.EcoNestImpl;
 import Robot.EcoBoxes;
 import Robot.EcoNest;
 import Robot.EcoRobots;
 import Robot.Environnement;
+import Robot.GridGui;
+import Robot.GridGui.CellGui;
 import Robot.Impl.EcoRobotsImpl;
 import Robot.interfaces.IInfo;
 import box.Impl.EcoBoxesImpl;
 import datatype.Position;
 
 public class EnvironnementImpl extends Environnement{	
-
-	@Override
-	protected IInfo make_informationGive() {
-		// TODO Auto-generated method stub
-		return new IInfo() {
-			
-			@Override
-			public Position getMyPosition(int idRobot) {
-				// TODO Auto-generated method stub
-				System.out.println("GET POSITION OF ROBOT : "+idRobot);
-				return null;
-			}
-		};
-	}
 	
 	@Override
 	protected EcoRobots make_robots() {
@@ -33,7 +23,14 @@ public class EnvironnementImpl extends Environnement{
 
 	@Override
 	protected EcoBoxes make_boxes() {
+		// TODO Auto-generated method stub
 		return new EcoBoxesImpl();
+	}
+
+	@Override
+	protected GridGui make_gridGui() {
+		// TODO Auto-generated method stub
+		return new GridGuiImpl();
 	}
 
 	@Override
