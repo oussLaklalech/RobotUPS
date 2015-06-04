@@ -124,11 +124,12 @@ public class EcoRobotsImpl extends EcoRobots {
 	
 							while(nonTrouve){
 								try {
-									Thread.sleep(2000 / vitesseSyst.get());
+									Thread.sleep(timeToSleep.get() / vitesseSyst.get());
 								} catch (InterruptedException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
+								
 								if(myPosition.getPosX() < nestTemp.getInfoNest().getPosition().getPosX()){
 									provides().agir().goStraight();
 								}
@@ -231,6 +232,7 @@ public class EcoRobotsImpl extends EcoRobots {
 					public void raiseBox(Box.Component box) {
 						// TODO : notifier la GUI pour la box
 						// TODO : supprimer la box de la listBoxes
+						eco_requires().robotManageGui().BoxPriseNotification(box.getInfoBox().getPosition());	
 						myBox = box;
 
 					}

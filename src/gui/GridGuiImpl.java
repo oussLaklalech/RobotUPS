@@ -304,8 +304,8 @@ public class GridGuiImpl extends GridGui {
 					public void BoxQuit() {
 						if(!type.equals("nest"))
 						{type="vide";
-						cell.setBackground(Color.WHITE);
-						cell.setText("");
+						//cell.setBackground(Color.WHITE);
+						//cell.setText("");
 						}
 					}
 
@@ -380,7 +380,7 @@ public class GridGuiImpl extends GridGui {
 			}
 
 			@Override
-			public void BoxPriseNotification(Position pos, Color color) {
+			public void BoxPriseNotification(Position pos) {
 				CellGui.Component cell = getCellByPos(pos);
 				
 				cell.manageCell().BoxQuit();
