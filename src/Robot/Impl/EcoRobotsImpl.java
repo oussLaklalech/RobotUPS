@@ -3,6 +3,7 @@ package Robot.Impl;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import Robot.EcoBoxes.Box;
@@ -21,6 +22,8 @@ public class EcoRobotsImpl extends EcoRobots {
 	static int nombreRobots = 0;
 	private int tailleGrille;
 	private AtomicInteger vitesseSyst = new AtomicInteger(1);
+	private AtomicInteger timeToSleep = new AtomicInteger(2000);
+	AtomicBoolean suspended = new AtomicBoolean(false);
 	private static ArrayList<Nest.Component> listNests = new ArrayList<Nest.Component>();
 
 	@Override
@@ -227,7 +230,11 @@ public class EcoRobotsImpl extends EcoRobots {
 					public void moveRandomly() {
 						Random rand = new Random();
 						try {
-							Thread.sleep(2000 / vitesseSyst.get());
+							   synchronized(this) {
+						            while(suspended.get()) {
+						               wait();
+						            }}
+							Thread.sleep(timeToSleep.get() / vitesseSyst.get());
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -314,8 +321,12 @@ public class EcoRobotsImpl extends EcoRobots {
 					for (final Robot.Component r : listRobots) {
 						Thread t = new Thread() {
 							public void run() {
+								
+						        
+						        
 								for (;;)
 									r.decider().reflechir();
+								
 							}
 						};
 						t.start();
@@ -350,6 +361,25 @@ public class EcoRobotsImpl extends EcoRobots {
 			public void setVitesse(int n) {
 				vitesseSyst.set(n);
 				System.out.println("Vitesse du système MAJ : " + n);
+			}
+
+			@Override
+			public void setPause() {
+				suspended.set(true);
+				System.out.println("*******************Système en Pause********************* ");
+				
+			}
+
+			 synchronized void resume() {
+				 suspended.set(false);
+					notify();
+			      
+			   }
+			 
+			@Override
+			public void setPlay() {
+				resume();
+				System.out.println("*******************Reprise du Système********************* ");
 			}
 		};
 	}

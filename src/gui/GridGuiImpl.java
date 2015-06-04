@@ -40,6 +40,7 @@ public class GridGuiImpl extends GridGui {
 	JButton buttonVitesse;
 	JButton buttonRobot;
 	JButton buttonBox;
+	JButton buttonPausePlay;
 
 	private ArrayList<CellGui.Component> listCells = new ArrayList<CellGui.Component>();
 
@@ -50,12 +51,29 @@ public class GridGuiImpl extends GridGui {
 	}
 
 	public void initInterfaceConfig() {
+		buttonPausePlay=new JButton("Pause");
 		buttonBox = new JButton("Crée des Boxs");
 		buttonRobot = new JButton("Crée des Robots");
 		buttonVitesse = new JButton("Changer la vitesse");
 		spinnerRobot = new JSpinner();
 		spinnerBox = new JSpinner();
 		spinnerVitesse = new JSpinner();
+		buttonPausePlay.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(buttonPausePlay.getText().equals("Pause"))
+				{
+					buttonPausePlay.setText("Play");
+				  requires().configureSystemeRobots().setPause();
+				}else{
+					buttonPausePlay.setText("Pause");
+					 requires().configureSystemeRobots().setPlay();
+				}
+			}
+		});
+		
+		
 		spinnerVitesse.addChangeListener(new ChangeListener() {
 
 			@Override
@@ -140,6 +158,7 @@ public class GridGuiImpl extends GridGui {
 		containerTop.add(buttonBox);
 		containerTop.add(spinnerVitesse);
 		containerTop.add(buttonVitesse);
+		containerTop.add(buttonPausePlay);
 		containerTop.setMaximumSize(new Dimension(1000, 150));
 		// f.getContentPane().add(containerTop);
 		containerPane.add(containerTop);
@@ -225,6 +244,8 @@ public class GridGuiImpl extends GridGui {
 		return new GridGui.CellGui() {
 			private JLabel cell;
 			public Position position;
+			String type="vide";
+			Color lastColor;
 
 			@Override
 			protected void start() {
@@ -248,35 +269,49 @@ public class GridGuiImpl extends GridGui {
 
 					@Override
 					public void RobotQuit() {
+						if(!type.equals("nest"))
+						{
 						cell.setBackground(Color.WHITE);
 						cell.setText("");
+						}
 					}
 
 					@Override
 					public void RobotArrive(Color color,boolean hasBox) {
+						if(!type.equals("nest"))
+						{
 						cell.setBackground(color);
 						if(hasBox){
 						cell.setText("<html><b>Rb</b></html>");
 						}else{
 							cell.setText("<html><b>R</b></html>");
 						}
+						}
 					}
 
 					@Override
 					public void BoxArrive(Color color) {
+						if(!type.equals("nest"))
+						{
+							type="box";
 						cell.setBackground(color);
 						cell.setText("<html><b>B</b></html>");
+						}
 
 					}
 
 					@Override
 					public void BoxQuit() {
+						if(!type.equals("nest"))
+						{type="vide";
 						cell.setBackground(Color.WHITE);
 						cell.setText("");
+						}
 					}
 
 					@Override
 					public void NestArrive(Color color) {
+						type="nest";
 						cell.setBackground(color);
 						cell.setText("<html><b>N</b></html>");
 
