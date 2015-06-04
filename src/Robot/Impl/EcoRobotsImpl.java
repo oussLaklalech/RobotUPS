@@ -3,6 +3,7 @@ package Robot.Impl;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import Robot.EcoBoxes.Box;
@@ -99,6 +100,8 @@ public class EcoRobotsImpl extends EcoRobots {
 						if(boxTemp != null){
 							// ********** AGIR *********
 							provides().agir().raiseBox(boxTemp);
+							System.out.println("$$$$$$$$$$$$$$$$$$$$$$ box Soulevé $$$$$$$$$$$$$$$$$$$");
+					
 							// chercher un nid avec la meme couleur que la box
 							if(searchNestWithColor(boxTemp.getInfoBox().getColor())==1){
 								provides().agir().depositBox();
@@ -211,6 +214,7 @@ public class EcoRobotsImpl extends EcoRobots {
 					@Override
 					public void raiseBox(Box.Component box) {
 						// TODO : notifier la GUI pour la box
+						// TODO : supprimer la box de la listBoxes
 						myBox = box;
 
 					}
