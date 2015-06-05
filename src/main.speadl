@@ -7,10 +7,15 @@ import Robot.interfaces.IConfigureEcoRobots
 import Robot.interfaces.ICreateRobot
 import Robot.interfaces.IEye
 import Robot.interfaces.IFootHand
+
+import Robot.interfaces.IGettersRobot
+import Robot.interfaces.ILife
+import Robot.interfaces.IPlay
 import box.Interface.IBoxesInfo
 import box.Interface.IConfigureEcoBox
 import box.Interface.ICreateBox
 import box.Interface.IGettersBox
+import box.Interface.IManageBoxes
 import datatype.Position
 import gui.Interface.IGetInfo
 import gui.Interface.IManageCell
@@ -35,6 +40,7 @@ namespace Robot {
 		requires robotManageGui : IManageGui
 		requires informationAboutBoxesNeed : IBoxesInfo
 		requires informationAboutNestsNeed : INestsInfo
+		requires manageBoxesNeed : IManageBoxes
 		provides log : ILogger	
 	
 		species Robot(color: Color, position: Position) {
@@ -42,6 +48,9 @@ namespace Robot {
 			provides decider: IBrain
 			provides agir: IFootHand
 		   
+		    provides play: IPlay
+		    provides seSuicider: ILife
+		    provides getInfoRobot: IGettersRobot
 		}
 	}
 	
@@ -49,6 +58,8 @@ namespace Robot {
 		provides create: ICreateBox
 		provides informationAboutBoxesGive : IBoxesInfo
 		provides setConfiguration : IConfigureEcoBox
+		provides manageBoxesGive : IManageBoxes
+		
 		requires boxManageGui : IManageGui
 		
 		species Box(color: Color, position: Position) {
@@ -96,6 +107,7 @@ namespace Robot {
 			bind informationAboutBoxesNeed to boxes.informationAboutBoxesGive
 			bind robotManageGui to gridGui.manageGui
 	
+			bind manageBoxesNeed to boxes.manageBoxesGive
 		}
 		
 		
