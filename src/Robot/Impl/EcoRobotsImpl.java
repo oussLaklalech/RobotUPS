@@ -13,6 +13,8 @@ import Robot.interfaces.IConfigureEcoRobots;
 import Robot.interfaces.ICreateRobot;
 import Robot.interfaces.IEye;
 import Robot.interfaces.IFootHand;
+import Robot.interfaces.IGettersRobot;
+import Robot.interfaces.ILife;
 import Robot.interfaces.IPlay;
 import datatype.Position;
 
@@ -52,7 +54,8 @@ public class EcoRobotsImpl extends EcoRobots {
 					// Création d'un nouveau Robot
 					eco_provides().create().createStandaloneRobot(myColor, myPosition);
 					System.out.println("Un Robot vient de créer un autre robot");
-					// TODO : Suicide
+					// Se Suicider 
+					provides().seSuicider().adieu(myId);
 				}
 			}
 
@@ -302,6 +305,44 @@ public class EcoRobotsImpl extends EcoRobots {
 					@Override
 					public void init(Robot.Component r) {
 						thread = new MyThread("MyThread", r);				
+					}
+				};
+			}
+
+			@Override
+			protected ILife make_seSuicider() {
+				return new ILife() {
+					
+					@Override
+					public void adieu(int idRobot) {
+						for(int i=0;i<listRobots.size();i++){
+							if(listRobots.get(i).getInfoRobot().getId() == idRobot){
+								listRobots.remove(i);
+								// TODO : notifier la GUI
+							}
+						}
+					}
+				};
+			}
+
+			@Override
+			protected IGettersRobot make_getInfoRobot() {
+				
+				return new IGettersRobot() {
+					
+					@Override
+					public Position getPosition() {
+						return myPosition;
+					}
+					
+					@Override
+					public int getId() {
+						return myId;
+					}
+					
+					@Override
+					public Color getColor() {
+						return myColor;
 					}
 				};
 			}
