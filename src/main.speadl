@@ -1,22 +1,23 @@
+import Nest.Interface.IConfigureEcoNest
 import Nest.Interface.ICreateNest
 import Nest.Interface.IGettersNest
 import Nest.Interface.INestsInfo
 import Robot.interfaces.IBrain
+import Robot.interfaces.IConfigureEcoRobots
 import Robot.interfaces.ICreateRobot
 import Robot.interfaces.IEye
 import Robot.interfaces.IFootHand
-import Robot.interfaces.IInfo
+import Robot.interfaces.IPlay
 import box.Interface.IBoxesInfo
+import box.Interface.IConfigureEcoBox
 import box.Interface.ICreateBox
 import box.Interface.IGettersBox
+import box.Interface.IManageBoxes
 import datatype.Position
 import gui.Interface.IGetInfo
 import gui.Interface.IManageCell
 import gui.Interface.IManageGui
 import java.awt.Color
-import Robot.interfaces.IConfigureEcoRobots
-import box.Interface.IConfigureEcoBox
-import Nest.Interface.IConfigureEcoNest
 
 namespace Robot {
 	ecosystem EcoNest {
@@ -35,12 +36,13 @@ namespace Robot {
 		requires robotManageGui : IManageGui
 		requires informationAboutBoxesNeed : IBoxesInfo
 		requires informationAboutNestsNeed : INestsInfo
+		requires manageBoxesNeed : IManageBoxes
 				
 		species Robot(color: Color, position: Position) {
 			provides percevoir: IEye
 			provides decider: IBrain
 			provides agir: IFootHand
-		
+		    provides play: IPlay
 		}
 	}
 	
@@ -48,6 +50,8 @@ namespace Robot {
 		provides create: ICreateBox
 		provides informationAboutBoxesGive : IBoxesInfo
 		provides setConfiguration : IConfigureEcoBox
+		provides manageBoxesGive : IManageBoxes
+		
 		requires boxManageGui : IManageGui
 		species Box(color: Color, position: Position) {
 			provides getInfoBox: IGettersBox	
@@ -93,6 +97,7 @@ namespace Robot {
 			bind informationAboutNestsNeed to nests.informationAboutNestsGive
 			bind informationAboutBoxesNeed to boxes.informationAboutBoxesGive
 			bind robotManageGui to gridGui.manageGui
+			bind manageBoxesNeed to boxes.manageBoxesGive
 		}
 		
 		

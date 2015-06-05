@@ -9,6 +9,7 @@ import box.Interface.IBoxesInfo;
 import box.Interface.IConfigureEcoBox;
 import box.Interface.ICreateBox;
 import box.Interface.IGettersBox;
+import box.Interface.IManageBoxes;
 import datatype.Position;
 
 public class EcoBoxesImpl extends EcoBoxes{
@@ -151,6 +152,26 @@ public class EcoBoxesImpl extends EcoBoxes{
 				tailleGrille=n;
 				System.out.println("*****La taille de la grille est configuré à "+n+"X"+n+" pour l'ecosystème Boxes*****");
 				
+			}
+		};
+	}
+
+	@Override
+	protected IManageBoxes make_manageBoxesGive() {
+		return new IManageBoxes() {
+			
+			@Override
+			public void removeBoxFromList(int idBox) {
+				for(int i=0;i<listBoxes.size();i++){
+					if(listBoxes.get(i).getInfoBox().getId() == idBox){
+						try{
+							listBoxes.remove(idBox);
+						}catch(Exception e){
+							
+						}
+						
+					}
+				}				
 			}
 		};
 	}

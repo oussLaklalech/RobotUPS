@@ -3,7 +3,6 @@ package Robot.Impl;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import Robot.EcoBoxes.Box;
@@ -14,6 +13,7 @@ import Robot.interfaces.IConfigureEcoRobots;
 import Robot.interfaces.ICreateRobot;
 import Robot.interfaces.IEye;
 import Robot.interfaces.IFootHand;
+import Robot.interfaces.IPlay;
 import datatype.Position;
 
 public class EcoRobotsImpl extends EcoRobots {
@@ -23,7 +23,6 @@ public class EcoRobotsImpl extends EcoRobots {
 	private int tailleGrille;
 	private AtomicInteger vitesseSyst = new AtomicInteger(1);
 	private AtomicInteger timeToSleep = new AtomicInteger(2000);
-	AtomicBoolean suspended = new AtomicBoolean(false);
 	private static ArrayList<Nest.Component> listNests = new ArrayList<Nest.Component>();
 
 	@Override
@@ -42,6 +41,8 @@ public class EcoRobotsImpl extends EcoRobots {
 			private int myId;
 			private int myEnergy;
 			private Box.Component myBox;
+			protected boolean suspended = false;
+			private MyThread thread;
 
 			private void updateEnergy() {
 				if (myEnergy > 3) {
@@ -94,6 +95,12 @@ public class EcoRobotsImpl extends EcoRobots {
 
 					@Override
 					public void reflechir() {
+						try {							   
+							Thread.sleep(timeToSleep.get() / vitesseSyst.get());
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						System.out.println("Je suis entrain de reflechir");
 						// ********** PERCEVOIR **********
 						Box.Component boxTemp = provides().percevoir().lookAtMyPosition();
@@ -234,22 +241,13 @@ public class EcoRobotsImpl extends EcoRobots {
 						// TODO : supprimer la box de la listBoxes
 						eco_requires().robotManageGui().BoxPriseNotification(box.getInfoBox().getPosition());	
 						myBox = box;
-
+						// On supprime la boîte de la liste
+						eco_requires().manageBoxesNeed().removeBoxFromList(box.getInfoBox().getId());
 					}
 
 					@Override
 					public void moveRandomly() {
 						Random rand = new Random();
-						try {
-							   synchronized(this) {
-						            while(suspended.get()) {
-						               wait();
-						            }}
-							Thread.sleep(timeToSleep.get() / vitesseSyst.get());
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
 						// nextInt is normally exclusive of the top value,
 						// so add 1 to make it inclusive
 						int randomNum = rand.nextInt(4) + 1;
@@ -278,11 +276,38 @@ public class EcoRobotsImpl extends EcoRobots {
 					@Override
 					public void depositBox() {
 						// TODO : notifier la GUI pour déposer la box
-						// TODO : MAJ ENERGIE
-						System.out.println("++++++ BOX déposé ++++");
+						System.out.println("++++++ BOX déposé +++++");
+						// On mets à jour l'energie du robot selon la couleur déposé
+						if(myBox.getInfoBox().getColor().equals(myColor)){
+							myEnergy = myEnergy+30;
+						}else{
+							myEnergy = myEnergy+10;
+						}
+						System.out.println("!!!!!!!!! ROBOT : ma nouvelle Energie est : "+myEnergy);
 						myBox = null;
 					}
 
+				};
+			}
+
+			@Override
+			protected IPlay make_play() {
+				return new IPlay() {
+					
+					@Override
+					public synchronized void resume() {
+						thread.resume();
+					}
+
+					@Override
+					public synchronized void pause() {
+						thread.suspend();
+					}
+
+					@Override
+					public void init(Robot.Component r) {
+						thread = new MyThread("MyThread", r);				
+					}
 				};
 			}
 
@@ -330,18 +355,7 @@ public class EcoRobotsImpl extends EcoRobots {
 						requires().robotManageGui().RobotCreateNotification(posRobot, color);
 					}
 					for (final Robot.Component r : listRobots) {
-						Thread t = new Thread() {
-							public void run() {
-								
-						        
-						        
-								for (;;)
-									r.decider().reflechir();
-								
-							}
-						};
-						t.start();
-
+						r.play().init(r);					
 					}
 				} catch (Exception e) {
 					System.out.println(e.getMessage());
@@ -376,23 +390,74 @@ public class EcoRobotsImpl extends EcoRobots {
 
 			@Override
 			public void setPause() {
-				suspended.set(true);
+				//suspended=true;
 				System.out.println("*******************Système en Pause********************* ");
+				for(int i=0;i<listRobots.size();i++){
+					 listRobots.get(i).play().pause();
+				 }
 				
 			}
-
-			 synchronized void resume() {
-				 suspended.set(false);
-					notify();
-			      
-			   }
 			 
 			@Override
 			public void setPlay() {
-				resume();
 				System.out.println("*******************Reprise du Système********************* ");
+				for(int i=0;i<listRobots.size();i++){
+					 listRobots.get(i).play().resume();
+				 }
 			}
 		};
 	}
+	
+	class MyThread implements Runnable {
+		  Thread thrd;
+		  boolean suspended;
+		  boolean stopped;
+		  Robot.Component robot;
+
+		  MyThread(String name, Robot.Component r) {
+		    thrd = new Thread(this, name);
+		    suspended = false;
+		    stopped = false;
+		    robot = r;
+		    thrd.start();
+		  }
+		  
+		  public void run() {
+		    try {
+		    	for (;;){
+					//Thread.sleep(50);
+		    		robot.decider().reflechir();
+					synchronized (this) {
+				          while (suspended)
+				            wait();
+				          if (stopped)
+				            break;
+				        }
+				}
+		 
+		    } catch (InterruptedException exc) {
+		      System.out.println(thrd.getName() + " interrupted.");
+		    }
+		    System.out.println("\n" + thrd.getName() + " exiting.");
+		  }
+
+		  synchronized void stop() {
+		    stopped = true;
+		    suspended = false;
+		    notify();
+		  }
+
+		  synchronized void suspend() {
+			  System.out.println("SUSPENDED----------------------------");
+		    suspended = true;
+		  }
+
+		  synchronized void resume() {
+			  System.out.println("RESUME----------------------------");
+		    suspended = false;
+		    notify();
+		  }
+		}
+
 
 }
