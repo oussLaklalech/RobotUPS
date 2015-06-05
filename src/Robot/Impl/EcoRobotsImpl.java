@@ -61,7 +61,7 @@ public class EcoRobotsImpl extends EcoRobots {
 				myColor = color;
 				myPosition = position;
 				myId = ++nombreRobots;
-				myEnergy = 100; // TODO : Configurable plus tard
+				myEnergy = 100;
 				System.out.println("Init Robot num : " + myId);
 				System.out.println("Ma couleur est : " + color.toString());
 				System.out.println("Ma position initiale est : X = "
@@ -133,7 +133,6 @@ public class EcoRobotsImpl extends EcoRobots {
 								try {
 									Thread.sleep(timeToSleep.get() / vitesseSyst.get());
 								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 								
@@ -202,8 +201,6 @@ public class EcoRobotsImpl extends EcoRobots {
 				
 					@Override
 					public void goStraight() {
-						// TODO : Aller tout droit dépend du sens du Robot (X+1
-						// ou X-1)
 						Position lastPos = new Position(myPosition.getPosX(),
 								myPosition.getPosY());
 
@@ -221,7 +218,6 @@ public class EcoRobotsImpl extends EcoRobots {
 
 					@Override
 					public void goBack() {
-						// TODO Auto-generated method stub
 						Position lastPos = new Position(myPosition.getPosX(),
 								myPosition.getPosY());
 						myPosition.setPosX(myPosition.getPosX() - 1);
@@ -237,8 +233,7 @@ public class EcoRobotsImpl extends EcoRobots {
 
 					@Override
 					public void raiseBox(Box.Component box) {
-						// TODO : notifier la GUI pour la box
-						// TODO : supprimer la box de la listBoxes
+						// On notifie la GUI qu'une boite a été soulevée
 						eco_requires().robotManageGui().BoxPriseNotification(box.getInfoBox().getPosition());	
 						myBox = box;
 						// On supprime la boîte de la liste
@@ -368,12 +363,10 @@ public class EcoRobotsImpl extends EcoRobots {
 
 	@Override
 	protected IConfigureEcoRobots make_setConfiguration() {
-		// TODO Auto-generated method stub
 		return new IConfigureEcoRobots() {
 
 			@Override
 			public void setTailleGrille(int n) {
-				// TODO Auto-generated method stub
 				tailleGrille = n;
 				System.out
 						.println("*****La taille de la grille est configuré à "
