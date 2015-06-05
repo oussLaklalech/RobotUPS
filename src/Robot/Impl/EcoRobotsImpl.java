@@ -1,11 +1,14 @@
 package Robot.Impl;
 
 import java.awt.Color;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import logging.Impl.LoggerImpl;
+import logging.Interface.ILogger;
 import Robot.EcoBoxes.Box;
 import Robot.EcoNest.Nest;
 import Robot.EcoRobots;
@@ -25,18 +28,21 @@ public class EcoRobotsImpl extends EcoRobots {
 	private AtomicInteger timeToSleep = new AtomicInteger(2000);
 	AtomicBoolean suspended = new AtomicBoolean(false);
 	private static ArrayList<Nest.Component> listNests = new ArrayList<Nest.Component>();
+	File logEcoRobot;
 
 	@Override
 	protected void start() {
-		System.out.println("Start de ECOROBOT");
-
+		String l1="Start de ECOROBOT";
+		System.out.println(l1);
+		logEcoRobot=provides().log().newRobotFile("EcoRobot");
+		provides().log().addLine(logEcoRobot, l1);
 	}
 
 	@Override
 	protected Robot make_Robot(final Color color, final Position position) {
 
 		return new Robot() {
-
+            private File mylogFile;
 			private Color myColor;
 			private Position myPosition;
 			private int myId;
@@ -57,15 +63,24 @@ public class EcoRobotsImpl extends EcoRobots {
 
 			@Override
 			protected void start() {
+			
 				myColor = color;
 				myPosition = position;
 				myId = ++nombreRobots;
 				myEnergy = 100; // TODO : Configurable plus tard
-				System.out.println("Init Robot num : " + myId);
-				System.out.println("Ma couleur est : " + color.toString());
-				System.out.println("Ma position initiale est : X = "
-						+ position.getPosX() + " et Y = " + position.getPosY());
-
+				String l1="Init Robot num : " + myId;
+				String l2="Ma couleur est : " + color.toString();
+				String l3="Ma position initiale est : X = "
+						+ position.getPosX() + " et Y = " + position.getPosY();
+				System.out.println(l1);
+				System.out.println(l2);
+				System.out.println(l3);
+				
+				
+				mylogFile=eco_provides().log().newRobotFile(myId+"");
+               eco_provides().log().addLine(mylogFile, l1);
+               eco_provides().log().addLine(mylogFile, l2);
+               eco_provides().log().addLine(mylogFile, l3);
 			}
 
 			@Override
@@ -394,5 +409,13 @@ public class EcoRobotsImpl extends EcoRobots {
 			}
 		};
 	}
+
+	@Override
+	protected ILogger make_log() {
+		// TODO Auto-generated method stub
+		return new LoggerImpl(new File("Robots"));
+	}
+
+	
 
 }
