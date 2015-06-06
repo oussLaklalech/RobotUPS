@@ -9,6 +9,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -41,6 +43,7 @@ public class GridGuiImpl extends GridGui {
 	JButton buttonRobot;
 	JButton buttonBox;
 	JButton buttonPausePlay;
+	JPanel containerDown;
 
 	private ArrayList<CellGui.Component> listCells = new ArrayList<CellGui.Component>();
 
@@ -164,6 +167,17 @@ public class GridGuiImpl extends GridGui {
 		containerPane.add(containerTop);
 	}
 
+	public void initEtatSystemeGui(){
+		containerDown = new JPanel();
+		BoxLayout b = new BoxLayout(containerDown, BoxLayout.X_AXIS);
+		containerDown.setLayout(b);
+		containerDown.add(new JButton("Hellloooooooooooooooooooooooo"));
+		
+		
+		containerDown.setMaximumSize(new Dimension(1000, 150));
+		// f.getContentPane().add(containerTop);
+		containerPane.add(containerDown);
+	}
 	@Override
 	protected void start() {
 		SwingUtilities.invokeLater(new Runnable() {
@@ -208,10 +222,52 @@ public class GridGuiImpl extends GridGui {
 							}
 							gridpane.setBorder(blackline);
 							containerPane.add(gridpane);
+						
 							f.pack();
 							setSystemeBounds(taille);
 							// f.setExtendedState(JFrame.MAXIMIZED_BOTH);
-							
+							gridpane.addMouseListener(new MouseListener() {
+								
+								@Override
+								public void mouseReleased(MouseEvent e) {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								@Override
+								public void mousePressed(MouseEvent e) {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								@Override
+								public void mouseExited(MouseEvent e) {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								@Override
+								public void mouseEntered(MouseEvent e) {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								@Override
+								public void mouseClicked(MouseEvent e) {
+								 int nbrNest=requires().infoNest().getAllNests().size();
+								 int nbrRboto=requires().infoRobot().nombreRobot();
+								 int nbrBoxes=requires().infoBox().nombreBox();
+								 
+								 String m="L'etat du système est :\n";
+								 m+="Nombre de Robot : "+nbrRboto+"\n";
+								 m+="Nombre de Boxes : "+nbrBoxes+"\n";
+								 m+="Nombre de Nids Constant  : "+nbrNest+"\n";
+									JOptionPane.showMessageDialog(f,
+											m+" !", "Etat du système",
+											JOptionPane.INFORMATION_MESSAGE);
+									
+								}
+							});;
 							
 							}
 							else{

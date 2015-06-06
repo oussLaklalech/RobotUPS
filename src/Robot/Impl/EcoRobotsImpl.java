@@ -18,6 +18,7 @@ import Robot.EcoRobots;
 import Robot.interfaces.IBrain;
 import Robot.interfaces.IConfigureEcoRobots;
 import Robot.interfaces.ICreateRobot;
+import Robot.interfaces.IEcoRobotInfo;
 import Robot.interfaces.IEye;
 import Robot.interfaces.IFootHand;
 import Robot.interfaces.IGettersRobot;
@@ -566,10 +567,23 @@ public class EcoRobotsImpl extends EcoRobots {
 	
 	String getheursSys(){
 		Calendar cal = Calendar.getInstance();
-		System.out.println(cal.get(Calendar.HOUR_OF_DAY)+"h "+cal.get(Calendar.MINUTE)+"m et "+cal.get(Calendar.SECOND)+"s");
+		
 
 				String txtDate="["+new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format(new Date())+" "+cal.get(Calendar.HOUR_OF_DAY)+
 						":"+cal.get(Calendar.MINUTE)+":"+cal.get(Calendar.SECOND)+"]";
 				return txtDate;
+	}
+
+	@Override
+	protected IEcoRobotInfo make_informationAboutRobot() {
+		// TODO Auto-generated method stub
+		return new IEcoRobotInfo() {
+			
+			@Override
+			public int nombreRobot() {
+				// TODO Auto-generated method stub
+				return listRobots.size();
+			}
+		};
 	}
 }

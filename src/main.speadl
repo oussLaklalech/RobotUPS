@@ -5,9 +5,9 @@ import Nest.Interface.INestsInfo
 import Robot.interfaces.IBrain
 import Robot.interfaces.IConfigureEcoRobots
 import Robot.interfaces.ICreateRobot
+import Robot.interfaces.IEcoRobotInfo
 import Robot.interfaces.IEye
 import Robot.interfaces.IFootHand
-
 import Robot.interfaces.IGettersRobot
 import Robot.interfaces.ILife
 import Robot.interfaces.IPlay
@@ -28,6 +28,7 @@ namespace Robot {
 		provides create: ICreateNest
 		provides informationAboutNestsGive : INestsInfo
 		provides setConfiguration : IConfigureEcoNest
+	
 		requires nestManageGui : IManageGui
 		species Nest(color: Color, position: Position){
 			provides getInfoNest: IGettersNest
@@ -37,6 +38,7 @@ namespace Robot {
 	ecosystem EcoRobots {
 		provides create: ICreateRobot
 		provides setConfiguration : IConfigureEcoRobots
+		provides informationAboutRobot :IEcoRobotInfo
 		requires robotManageGui : IManageGui
 		requires informationAboutBoxesNeed : IBoxesInfo
 		requires informationAboutNestsNeed : INestsInfo
@@ -74,7 +76,9 @@ namespace Robot {
 			requires configureSystemeBoxs : IConfigureEcoBox
 			requires createRobots : ICreateRobot
 			requires createBox : ICreateBox
-		
+		    requires infoBox : IBoxesInfo
+		    requires infoNest : INestsInfo
+		    requires infoRobot :IEcoRobotInfo
 		species CellGui(position : Position) {
 			provides manageCell :IManageCell
 			provides getInfo : IGetInfo
@@ -99,6 +103,9 @@ namespace Robot {
 			bind configureSystemeRobots to robots.setConfiguration
 			bind configureSystemeNests to nests.setConfiguration
 			bind configureSystemeBoxs to boxes.setConfiguration
+			bind infoBox to boxes.informationAboutBoxesGive
+			bind infoNest to nests.informationAboutNestsGive
+			bind infoRobot to robots.informationAboutRobot
 			
 		}
 	

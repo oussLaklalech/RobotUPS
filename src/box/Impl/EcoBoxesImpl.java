@@ -136,6 +136,12 @@ public class EcoBoxesImpl extends EcoBoxes{
 				}
 				return null;
 			}
+
+			@Override
+			public int nombreBox() {
+				// TODO Auto-generated method stub
+				return listBoxes.size();
+			}
 			
 			
 		};
