@@ -393,6 +393,16 @@ public class GridGuiImpl extends GridGui {
 				cell.manageCell().RobotArrive(color,false);
 				
 			}
+
+			@Override
+			public void RobotSuicideNotification(Position Pos) {
+				CellGui.Component lastcell = getCellByPos(Pos);
+				
+
+				lastcell.manageCell().RobotQuit();
+			
+				
+			}
 		};
 	}
 

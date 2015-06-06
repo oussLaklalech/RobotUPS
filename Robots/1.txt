@@ -1,0 +1,27 @@
+[06/06/2015 11:56:45]Init Robot num : 1
+[06/06/2015 11:56:45]Ma couleur est : java.awt.Color[r=0,g=0,b=255]
+[06/06/2015 11:56:45]Ma position initiale est : X = 7 et Y = 2
+[06/06/2015 11:56:48]Je suis entrain de reflechir
+[06/06/2015 11:56:48]je regarde s'il y a une boîte !!
+[06/06/2015 11:56:48] Aucune box trouvée
+[06/06/2015 11:56:48]Ma nouvelle energie est 99
+[06/06/2015 11:56:51]Je suis entrain de reflechir
+[06/06/2015 11:56:51]je regarde s'il y a une boîte !!
+[06/06/2015 11:56:51] Aucune box trouvée
+[06/06/2015 11:56:51]Ma nouvelle energie est 98
+[06/06/2015 11:56:51]Je recule vers X = 7 | Y = 2 mon energie est de 98
+[06/06/2015 11:56:51]Je suis entrain de reflechir
+[06/06/2015 11:56:51]je regarde s'il y a une boîte !!
+[06/06/2015 11:56:51] Aucune box trouvée
+[06/06/2015 11:56:51]Ma nouvelle energie est 97
+[06/06/2015 11:56:52]Je recule vers X = 6 | Y = 2 mon energie est de 97
+[06/06/2015 11:56:52]Je suis entrain de reflechir
+[06/06/2015 11:56:52]je regarde s'il y a une boîte !!
+[06/06/2015 11:56:52] Aucune box trouvée
+[06/06/2015 11:56:52]Ma nouvelle energie est 96
+[06/06/2015 11:56:52]Je recule vers X = 5 | Y = 2 mon energie est de 96
+[06/06/2015 11:56:52]Je suis entrain de reflechir
+[06/06/2015 11:56:52]je regarde s'il y a une boîte !!
+[06/06/2015 11:56:52] Aucune box trouvée
+[06/06/2015 11:56:53]Ma nouvelle energie est 95
+[06/06/2015 11:56:53]Je suis entrain de reflechir

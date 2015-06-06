@@ -1,0 +1,3 @@
+Start de ECOROBOT
+*****La taille de la grille est configuré à 12X12 pour l'ecosystéme Robot*****
+Vitesse du système MAJ : 26

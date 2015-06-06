@@ -2,7 +2,11 @@ package Robot.Impl;
 
 import java.awt.Color;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -36,7 +40,7 @@ public class EcoRobotsImpl extends EcoRobots {
 		String l1="Start de ECOROBOT";
 		System.out.println(l1);
 		logEcoRobot=provides().log().newRobotFile("EcoRobot");
-		provides().log().addLine(logEcoRobot, l1);
+		provides().log().addLine(logEcoRobot,getheursSys()+getheursSys()+ l1);
 	}
 
 	@Override
@@ -55,12 +59,19 @@ public class EcoRobotsImpl extends EcoRobots {
 			private void updateEnergy() {
 				if (myEnergy > 3) {
 					myEnergy = myEnergy - 1;
-					System.out.println(myEnergy);
+					String printEnergy="Ma nouvelle energie est "+myEnergy;
+					   eco_provides().log().addLine(mylogFile,getheursSys()+ printEnergy);
+					System.out.println(printEnergy);
+					
 				} else {
 					// Création d'un nouveau Robot
 					eco_provides().create().createStandaloneRobot(myColor, myPosition);
+					String message="J'ai perdu tout mon enegie je crée un nouveau Robot ";
 					System.out.println("Un Robot vient de créer un autre robot");
+					 eco_provides().log().addLine(mylogFile,getheursSys()+ message);
 					// Se Suicider 
+					 String message2="Je me suicide ";
+						eco_provides().log().addLine(mylogFile,getheursSys()+ message2);
 					provides().seSuicider().adieu(myId);
 				}
 			}
@@ -77,15 +88,16 @@ public class EcoRobotsImpl extends EcoRobots {
 				String l2="Ma couleur est : " + color.toString();
 				String l3="Ma position initiale est : X = "
 						+ position.getPosX() + " et Y = " + position.getPosY();
+				String l4="Mon energie initial est : "+myEnergy;
 				System.out.println(l1);
 				System.out.println(l2);
 				System.out.println(l3);
 				
 				
 				mylogFile=eco_provides().log().newRobotFile(myId+"");
-               eco_provides().log().addLine(mylogFile, l1);
-               eco_provides().log().addLine(mylogFile, l2);
-               eco_provides().log().addLine(mylogFile, l3);
+               eco_provides().log().addLine(mylogFile,getheursSys()+ l1);
+               eco_provides().log().addLine(mylogFile,getheursSys()+ l2);
+               eco_provides().log().addLine(mylogFile,getheursSys()+ l3);
 
 			}
 
@@ -95,14 +107,21 @@ public class EcoRobotsImpl extends EcoRobots {
 
 					@Override
 					public Box.Component lookAtMyPosition() {
-						System.out.println("je regarde s'il y a une boîte !!");
+						String message="je regarde s'il y a une boîte !!";
+						System.out.println(message);
+						 eco_provides().log().addLine(mylogFile,getheursSys()+ message);
 						Box.Component box = eco_requires().informationAboutBoxesNeed().getBoxInPosition(myPosition);
 						if(box != null){
-							System.out.println("PERCEPTION : "+box.getInfoBox().getColor());
+							
+							String message2="PERCEPTION : Box "+box.getInfoBox().getColor()+" positon "+box.getInfoBox().getPosition();
+							System.out.println(message2);
+							 eco_provides().log().addLine(mylogFile,getheursSys()+ message2);
 							return box;
 						}
 						else{
-							System.out.println("pas de box dans l'emplacement");
+							String message3=" Aucune box trouvée";
+							eco_provides().log().addLine(mylogFile,getheursSys()+ message3);
+							System.out.println(message3);
 							return null;
 						}
 					}
@@ -121,7 +140,9 @@ public class EcoRobotsImpl extends EcoRobots {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						System.out.println("Je suis entrain de reflechir");
+						String message="Je suis entrain de reflechir";
+						eco_provides().log().addLine(mylogFile,getheursSys()+ message);
+						System.out.println(message);
 						// ********** PERCEVOIR **********
 						Box.Component boxTemp = provides().percevoir().lookAtMyPosition();
 						// ********* DECIDER **********
@@ -129,7 +150,9 @@ public class EcoRobotsImpl extends EcoRobots {
 						if(boxTemp != null && myBox == null){
 							// ********** AGIR *********
 							provides().agir().raiseBox(boxTemp);
-							System.out.println("$$$$$$$$$$$$$$$$$$$$$$ box Soulevé $$$$$$$$$$$$$$$$$$$");
+							String message1="J'ai soulevé la box "+boxTemp.getInfoBox().getColor()+" qui se trouve dans la pos "+boxTemp.getInfoBox().getPosition();
+							eco_provides().log().addLine(mylogFile,getheursSys()+ message1);
+							System.out.println(message1);
 							
 							// chercher un nid avec la meme couleur que la box
 							if(searchNestWithColor(boxTemp.getInfoBox().getColor())==1){
@@ -144,6 +167,8 @@ public class EcoRobotsImpl extends EcoRobots {
 
 					private int searchNestWithColor(Color color) {
 						// Chercher le nid avec la meme couleur dans listNests
+						String message1="Recherche de nid avec couleur";
+						eco_provides().log().addLine(mylogFile,getheursSys()+ message1);
 						System.out.println(":::::::::::::::::::::searching Nest With Color ... :::::::::::::::::");
 						boolean nonTrouve = true;
 						Nest.Component nestTemp = eco_requires().informationAboutNestsNeed().getNestWithColor(color);
@@ -170,7 +195,8 @@ public class EcoRobotsImpl extends EcoRobots {
 								}
 								if(myPosition.equals(nestTemp.getInfoNest().getPosition())){
 									nonTrouve = true;
-									System.out.println("ùùùùùùùùùùùù NID TROUVE ùùùùùùùùùùù");
+									String message2=" Nid retrouvé :D à moi le bonus d'energie !!";
+									eco_provides().log().addLine(mylogFile,getheursSys()+ message2);
 									return 1;
 								}
 							}
@@ -191,6 +217,7 @@ public class EcoRobotsImpl extends EcoRobots {
 								myPosition.getPosY());
 						myPosition.setPosY(myPosition.getPosY() - 1);
 						System.out.println(myPosition);
+					
 						System.out.println("je tourne à gauche");
 					
 						updateEnergy();
@@ -201,6 +228,8 @@ public class EcoRobotsImpl extends EcoRobots {
 								myColor,
 								myBox!=null
 								);
+						String message2="Je tourne à gauche vers "+myPosition+" mon energie est de "+myEnergy;
+						eco_provides().log().addLine(mylogFile,getheursSys()+ message2);
 					}
 
 					@Override
@@ -216,6 +245,8 @@ public class EcoRobotsImpl extends EcoRobots {
 										.getPosY()), myColor, myBox!=null);
 
 						updateEnergy();
+						String message2="Je tourne à droite vers "+myPosition+" mon energie est de "+myEnergy;
+						eco_provides().log().addLine(mylogFile,getheursSys()+ message2);
 					}
 
 				
@@ -249,6 +280,8 @@ public class EcoRobotsImpl extends EcoRobots {
 								new Position(myPosition.getPosX(), myPosition
 										.getPosY()), myColor,myBox!=null);
 						updateEnergy();
+						String message2="Je recule vers "+myPosition+" mon energie est de "+myEnergy;
+						eco_provides().log().addLine(mylogFile,getheursSys()+ message2);
 					}
 
 					@Override
@@ -290,7 +323,7 @@ public class EcoRobotsImpl extends EcoRobots {
 
 					@Override
 					public void depositBox() {
-						// TODO : notifier la GUI pour déposer la box
+						
 						System.out.println("++++++ BOX déposé +++++");
 						// On mets à jour l'energie du robot selon la couleur déposé
 						if(myBox.getInfoBox().getColor().equals(myColor)){
@@ -300,6 +333,8 @@ public class EcoRobotsImpl extends EcoRobots {
 						}
 						System.out.println("!!!!!!!!! ROBOT : ma nouvelle Energie est : "+myEnergy);
 						myBox = null;
+						String message2="Je dépose la BOX, ma nouvelle energie est "+myEnergy;
+						eco_provides().log().addLine(mylogFile,getheursSys()+ message2);
 					}
 
 				};
@@ -334,8 +369,9 @@ public class EcoRobotsImpl extends EcoRobots {
 					public void adieu(int idRobot) {
 						for(int i=0;i<listRobots.size();i++){
 							if(listRobots.get(i).getInfoRobot().getId() == idRobot){
+								
+								eco_requires().robotManageGui().RobotSuicideNotification(listRobots.get(i).getInfoRobot().getPosition());
 								listRobots.remove(i);
-								// TODO : notifier la GUI
 							}
 						}
 					}
@@ -426,9 +462,11 @@ public class EcoRobotsImpl extends EcoRobots {
 			@Override
 			public void setTailleGrille(int n) {
 				tailleGrille = n;
+				String m="*****La taille de la grille est configuré à "
+						+ n + "X" + n + " pour l'ecosystéme Robot*****";
 				System.out
-						.println("*****La taille de la grille est configuré à "
-								+ n + "X" + n + " pour l'ecosystéme Robot*****");
+						.println(m);
+				provides().log().addLine(logEcoRobot,getheursSys()+ m);
 				// On récupère les nids avec leurs couleurs & positions
 				listNests = requires().informationAboutNestsNeed().getAllNests();
 			}
@@ -436,13 +474,18 @@ public class EcoRobotsImpl extends EcoRobots {
 			@Override
 			public void setVitesse(int n) {
 				vitesseSyst.set(n);
-				System.out.println("Vitesse du système MAJ : " + n);
+				String m="Vitesse du système MAJ : " + n;
+				System.out.println(m);
+				provides().log().addLine(logEcoRobot,getheursSys()+ m);
 			}
 
 			@Override
 			public void setPause() {
 				//suspended=true;
-				System.out.println("*******************Système en Pause********************* ");
+			
+				String m="*******************Système en Pause********************* ";
+				System.out.println(m);
+				provides().log().addLine(logEcoRobot,getheursSys()+ m);
 				for(int i=0;i<listRobots.size();i++){
 					 listRobots.get(i).play().pause();
 				 }
@@ -451,7 +494,10 @@ public class EcoRobotsImpl extends EcoRobots {
 			 
 			@Override
 			public void setPlay() {
-				System.out.println("*******************Reprise du Système********************* ");
+			
+				String m="*******************Reprise du Système********************* ";
+				System.out.println(m);
+				provides().log().addLine(logEcoRobot,getheursSys()+ m);
 				for(int i=0;i<listRobots.size();i++){
 					 listRobots.get(i).play().resume();
 				 }
@@ -518,5 +564,12 @@ public class EcoRobotsImpl extends EcoRobots {
 	}
 
 	
+	String getheursSys(){
+		Calendar cal = Calendar.getInstance();
+		System.out.println(cal.get(Calendar.HOUR_OF_DAY)+"h "+cal.get(Calendar.MINUTE)+"m et "+cal.get(Calendar.SECOND)+"s");
 
+				String txtDate="["+new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format(new Date())+" "+cal.get(Calendar.HOUR_OF_DAY)+
+						":"+cal.get(Calendar.MINUTE)+":"+cal.get(Calendar.SECOND)+"]";
+				return txtDate;
+	}
 }
