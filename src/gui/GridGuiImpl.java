@@ -55,8 +55,8 @@ public class GridGuiImpl extends GridGui {
 
 	public void initInterfaceConfig() {
 		buttonPausePlay=new JButton("Pause");
-		buttonBox = new JButton("Crée des Boxs");
-		buttonRobot = new JButton("Crée des Robots");
+		buttonBox = new JButton("Créer des Boxs");
+		buttonRobot = new JButton("Créer des Robots");
 		buttonVitesse = new JButton("Changer la vitesse");
 		spinnerRobot = new JSpinner();
 		spinnerBox = new JSpinner();
@@ -91,7 +91,7 @@ public class GridGuiImpl extends GridGui {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				// TODO Auto-generated method stub
-				buttonBox.setText("Crée " + spinnerBox.getValue() + " Boxs");
+				buttonBox.setText("Créer " + spinnerBox.getValue() + " Boites");
 
 			}
 		});
@@ -100,7 +100,7 @@ public class GridGuiImpl extends GridGui {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				// TODO Auto-generated method stub
-				buttonRobot.setText("Crée " + spinnerRobot.getValue()
+				buttonRobot.setText("Créer " + spinnerRobot.getValue()
 						+ " Robots");
 
 			}
@@ -188,7 +188,7 @@ public class GridGuiImpl extends GridGui {
 				final JTextField textTailleGrille = new JTextField(
 						"Taille de la grille (Entier)");
 				textTailleGrille.setColumns(15);
-				final JButton bAddAccount = new JButton("Crée");
+				final JButton bAddAccount = new JButton("Créer");
 				final JPanel panelTailleGrille = new JPanel();
 				panelTailleGrille.add(textTailleGrille);
 				panelTailleGrille.add(bAddAccount);
